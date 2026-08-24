@@ -15,10 +15,10 @@ jobs:
     timeout-minutes: 15
     env:
       DJANGO_DEBUG: "1"
-      DJANGO_DB_PATH: ${{ runner.temp }}/bitaturno-ci.sqlite3
-      DJANGO_MEDIA_ROOT: ${{ runner.temp }}/media
-      DJANGO_STATIC_ROOT: ${{ runner.temp }}/static
-      DATA_TRANSFER_WORK_ROOT: ${{ runner.temp }}/transferencias
+      DJANGO_DB_PATH: /tmp/bitaturno-ci.sqlite3
+      DJANGO_MEDIA_ROOT: /tmp/bitaturno-media
+      DJANGO_STATIC_ROOT: /tmp/bitaturno-static
+      DATA_TRANSFER_WORK_ROOT: /tmp/bitaturno-transferencias
 
     defaults:
       run:
