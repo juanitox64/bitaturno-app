@@ -99,8 +99,8 @@ class MockupStructureTests(unittest.TestCase):
     def test_service_worker_caches_the_complete_shell(self):
         expected = [
             "./index.html",
-            "./css/styles.css",
-            "./js/app.js",
+            "./css/styles.css?v=3",
+            "./js/app.js?v=3",
             "./manifest.webmanifest",
             "./assets/icons/icon-192.svg",
             "./assets/icons/icon-512.svg",
@@ -108,7 +108,9 @@ class MockupStructureTests(unittest.TestCase):
         ]
         for path in expected:
             self.assertIn(f'"{path}"', self.service_worker)
-        self.assertIn('CACHE_NAME = "bitaturno-mockup-v2"', self.service_worker)
+        self.assertIn('CACHE_NAME = "bitaturno-mockup-v3"', self.service_worker)
+        self.assertIn("fetch(event.request)", self.service_worker)
+        self.assertIn("caches.match(event.request)", self.service_worker)
 
     def test_scope_is_explicit_in_visible_copy(self):
         self.assertIn("Prototipo navegable", self.html)
