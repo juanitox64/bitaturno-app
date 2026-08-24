@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">Evidencia ficticia</title>
+  <desc id="desc">Ilustración geométrica genérica de un equipo identificado como EQ-001.</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1"><stop stop-color="#dfe9e5"/><stop offset="1" stop-color="#b9cec6"/></linearGradient></defs>
+  <rect width="720" height="420" rx="24" fill="url(#bg)"/>
+  <rect x="88" y="90" width="544" height="240" rx="18" fill="#f9fbfa" stroke="#668c81" stroke-width="6"/>
+  <rect x="128" y="132" width="188" height="154" rx="12" fill="#123c36"/>
+  <circle cx="222" cy="209" r="54" fill="#e5a93d"/>
+  <path d="M222 170v39l28 20" fill="none" stroke="#123c36" stroke-width="12" stroke-linecap="round"/>
+  <rect x="356" y="142" width="212" height="26" rx="13" fill="#7fa398"/>
+  <rect x="356" y="190" width="166" height="20" rx="10" fill="#bfd2cc"/>
+  <rect x="356" y="231" width="190" height="20" rx="10" fill="#bfd2cc"/>
+  <text x="356" y="293" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#123c36">EQ-001 · DEMO</text>
+  <text x="360" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#41675e">IMAGEN FICTICIA PARA PROTOTIPO</text>
+</svg>

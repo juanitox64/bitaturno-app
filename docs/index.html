@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123c36">
+  <meta name="description" content="Prototipo móvil navegable de BitaTurno v0.3">
+  <title>BitaTurno — Prototipo móvil</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon-192.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="prototype-note" role="note">
+    Prototipo navegable — no corresponde a la aplicación móvil final.
+  </div>
+
+  <main class="phone" aria-live="polite">
+    <section class="screen screen-login is-active" data-screen="login" aria-labelledby="login-title">
+      <div class="login-brand">
+        <span class="brand-mark" aria-hidden="true">BT</span>
+        <p class="eyebrow">Registro de jornada</p>
+        <h1 id="login-title">BitaTurno</h1>
+        <p>Captura, completa y consulta novedades desde una experiencia móvil.</p>
+      </div>
+
+      <form id="login-form" class="card form-stack" novalidate>
+        <div class="demo-badge">Demostración: use cualquier dato ficticio</div>
+        <label for="login-user">Usuario</label>
+        <input id="login-user" name="usuario" autocomplete="username" placeholder="usuario.demo" required>
+        <label for="login-password">Contraseña</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+        <p class="field-error" id="login-error" hidden>Ingrese un usuario y una contraseña ficticios.</p>
+        <button class="button button-primary button-full" type="submit">Ingresar al prototipo</button>
+      </form>
+
+      <p class="privacy-note">Este sitio no autentica ni transmite credenciales.</p>
+    </section>
+
+    <section class="screen" data-screen="jornada" aria-labelledby="jornada-title">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Lunes · Turno A</p>
+          <h1 id="jornada-title">Mi jornada</h1>
+        </div>
+        <button class="avatar" type="button" data-go="login" aria-label="Volver al inicio de sesión">UD</button>
+      </header>
+
+      <article class="shift-card">
+        <div>
+          <span class="status-dot"></span>
+          <span>Jornada activa</span>
+        </div>
+        <strong>08:00 – 16:00</strong>
+        <p>Turno A · Disciplina Alfa</p>
+      </article>
+
+      <div class="metric-grid" aria-label="Resumen de registros">
+        <article><strong id="capture-count">4</strong><span>Capturas</span></article>
+        <article><strong id="draft-count">2</strong><span>Borradores</span></article>
+        <article><strong>2</strong><span>Sincronizadas</span></article>
+        <article><strong id="pending-count">2</strong><span>Pendientes</span></article>
+      </div>
+
+      <button class="button button-primary button-full button-large" type="button" data-go="captura">
+        <span aria-hidden="true">＋</span> Nueva captura
+      </button>
+
+      <h2>Accesos de la jornada</h2>
+      <div class="action-list">
+        <button type="button" data-go="borradores"><span class="action-icon">BD</span><span><strong>Mis borradores</strong><small>Continúe registros incompletos</small></span><span>›</span></button>
+        <button type="button" data-go="resumen"><span class="action-icon">RJ</span><span><strong>Resumen de jornada</strong><small>Agrupación manual de actividades</small></span><span>›</span></button>
+        <button type="button" data-go="historico"><span class="action-icon">HI</span><span><strong>Histórico</strong><small>Consulte novedades registradas</small></span><span>›</span></button>
+      </div>
+
+      <article class="sync-card">
+        <span class="sync-icon" aria-hidden="true">↻</span>
+        <div><strong>Estado de sincronización simulado</strong><p>2 capturas pendientes · Última revisión 15:42</p></div>
+      </article>
+    </section>
+
+    <section class="screen" data-screen="captura" aria-labelledby="captura-title">
+      <header class="app-header compact">
+        <button class="back-button" type="button" data-go="jornada" aria-label="Volver a Mi jornada">‹</button>
+        <div><p class="eyebrow">Paso 1 de 2</p><h1 id="captura-title">Nueva captura</h1></div>
+      </header>
+
+      <div class="connectivity" id="connectivity-label"><span></span> Con conexión</div>
+
+      <form id="capture-form" class="form-stack" novalidate>
+        <label for="capture-description">¿Qué ocurrió?</label>
+        <textarea id="capture-description" rows="5" maxlength="500" placeholder="Describa brevemente la observación..."></textarea>
+        <div class="field-meta"><span>Puede completar la clasificación más tarde</span><span id="description-count">0/500</span></div>
+
+        <fieldset>
+          <legend>Evidencia fotográfica opcional</legend>
+          <div class="photo-actions">
+            <label class="upload-button" for="camera-input"><strong>Tomar fotografía</strong><small>Usar cámara del dispositivo</small></label>
+            <input id="camera-input" type="file" accept="image/jpeg,image/png,image/webp" capture="environment">
+            <label class="upload-button" for="gallery-input"><strong>Elegir de galería</strong><small>JPEG, PNG o WEBP</small></label>
+            <input id="gallery-input" type="file" accept="image/jpeg,image/png,image/webp">
+          </div>
+          <p id="selected-photo" class="selected-file">Ninguna fotografía seleccionada.</p>
+        </fieldset>
+
+        <label for="capture-date">Fecha y hora de ocurrencia <span class="optional">Opcional</span></label>
+        <input id="capture-date" type="datetime-local">
+
+        <label for="connectivity-select">Simular conectividad</label>
+        <select id="connectivity-select">
+          <option value="online">Con conexión</option>
+          <option value="offline">Sin cobertura</option>
+        </select>
+
+        <p class="field-error" id="capture-error" hidden>Escriba una descripción o seleccione una fotografía.</p>
+        <button class="button button-primary button-full" type="submit" data-action="save-local">Guardar captura</button>
+        <button class="button button-secondary button-full" type="button" id="continue-capture">Continuar y completar</button>
+      </form>
+    </section>
+
+    <section class="screen" data-screen="borradores" aria-labelledby="drafts-title">
+      <header class="app-header compact">
+        <button class="back-button" type="button" data-go="jornada" aria-label="Volver a Mi jornada">‹</button>
+        <div><p class="eyebrow">Trabajo pendiente</p><h1 id="drafts-title">Mis borradores</h1></div>
+      </header>
+
+      <label class="search-field" for="draft-filter">Filtrar borradores
+        <input id="draft-filter" type="search" placeholder="Buscar por texto o estado">
+      </label>
+
+      <div class="record-list" id="draft-list">
+        <article class="record-card" data-search="inspección visual local pendiente">
+          <div class="record-top"><span class="tag tag-warning">Pendiente de sincronización</span><span>Hoy · 10:18</span></div>
+          <h2>Inspección visual en Zona 1</h2>
+          <p>Registro capturado sin clasificación completa.</p>
+          <div class="progress"><span style="width: 45%"></span></div>
+          <div class="record-actions"><small>Avance 45%</small><button type="button" data-go="completar">Continuar</button></div>
+        </article>
+
+        <article class="record-card" data-search="ruido equipo sincronizado">
+          <div class="record-top"><span class="tag tag-success">Guardado localmente</span><span>Hoy · 13:35</span></div>
+          <h2>Observación en EQ-001</h2>
+          <p>Se requiere completar turno y prioridad.</p>
+          <div class="progress"><span style="width: 70%"></span></div>
+          <div class="record-actions"><small>Avance 70%</small><button type="button" data-go="completar">Continuar</button></div>
+        </article>
+      </div>
+      <p class="empty-state" id="draft-empty" hidden>No hay borradores que coincidan.</p>
+    </section>
+
+    <section class="screen" data-screen="completar" aria-labelledby="complete-title">
+      <header class="app-header compact">
+        <button class="back-button" type="button" data-go="borradores" aria-label="Volver a borradores">‹</button>
+        <div><p class="eyebrow">Paso 2 de 2</p><h1 id="complete-title">Completar novedad</h1></div>
+      </header>
+
+      <div class="draft-warning">Este borrador aún no forma parte de la bitácora oficial.</div>
+
+      <form id="complete-form" class="form-stack" novalidate>
+        <label for="complete-title-field">Título *</label>
+        <input id="complete-title-field" required value="Inspección visual en Zona 1">
+        <label for="complete-description">Descripción *</label>
+        <textarea id="complete-description" rows="4" required>Se detectó una condición que requiere revisión durante la ronda.</textarea>
+
+        <div class="form-grid">
+          <label for="discipline">Disciplina *<select id="discipline" required><option value="">Seleccione</option><option>Disciplina Alfa</option><option>Disciplina Beta</option></select></label>
+          <label for="type">Tipo *<select id="type" required><option value="">Seleccione</option><option>Observación</option><option>Incidencia</option></select></label>
+          <label for="shift">Turno *<select id="shift" required><option value="">Seleccione</option><option>Turno A</option><option>Turno B</option></select></label>
+          <label for="priority">Prioridad *<select id="priority" required><option value="">Seleccione</option><option>Baja</option><option>Media</option><option>Alta</option></select></label>
+          <label for="area">Área<select id="area"><option>Zona 1</option><option>Zona 2</option></select></label>
+          <label for="equipment">Equipo<select id="equipment"><option>EQ-001</option><option>EQ-002</option></select></label>
+        </div>
+
+        <article class="evidence-preview"><img src="assets/images/evidencia-ficticia.svg" alt="Ilustración ficticia de evidencia"><div><strong>Evidencia ficticia</strong><p>captura-demostracion.webp</p></div></article>
+        <div class="validation-box" id="complete-errors" hidden></div>
+        <button class="button button-primary button-full" type="submit">Finalizar registro</button>
+        <button class="button button-secondary button-full" type="button" data-go="borradores">Guardar cambios del borrador</button>
+      </form>
+    </section>
+
+    <section class="screen" data-screen="resumen" aria-labelledby="summary-title">
+      <header class="app-header compact">
+        <button class="back-button" type="button" data-go="jornada" aria-label="Volver a Mi jornada">‹</button>
+        <div><p class="eyebrow">Consolidación manual</p><h1 id="summary-title">Resumen de jornada</h1></div>
+      </header>
+
+      <p class="helper">Seleccione capturas y redacte el resumen. El prototipo no genera contenido automáticamente.</p>
+      <form id="summary-form" class="form-stack">
+        <fieldset class="selection-list">
+          <legend>Capturas de la jornada</legend>
+          <label><input type="checkbox" checked> Inspección visual en Zona 1 <span>10:18</span></label>
+          <label><input type="checkbox" checked> Observación en EQ-001 <span>13:35</span></label>
+          <label><input type="checkbox"> Verificación de cierre <span>15:10</span></label>
+        </fieldset>
+
+        <label for="activities">Actividades realizadas</label>
+        <textarea id="activities" rows="3" placeholder="Resumen escrito por la persona usuaria"></textarea>
+        <label for="relevant">Novedades relevantes</label>
+        <textarea id="relevant" rows="3" placeholder="Novedades destacadas manualmente"></textarea>
+        <label for="pending">Pendientes</label>
+        <textarea id="pending" rows="3" placeholder="Acciones que continúan en el próximo turno"></textarea>
+        <button class="button button-secondary button-full" type="button" id="preview-summary">Generar vista previa</button>
+        <article class="summary-preview" id="summary-preview" hidden></article>
+        <button class="button button-primary button-full" type="submit">Guardar resumen</button>
+      </form>
+    </section>
+
+    <section class="screen" data-screen="historico" aria-labelledby="history-title">
+      <header class="app-header compact">
+        <button class="back-button" type="button" data-go="jornada" aria-label="Volver a Mi jornada">‹</button>
+        <div><p class="eyebrow">Bitácora oficial</p><h1 id="history-title">Histórico</h1></div>
+      </header>
+
+      <div class="filter-row">
+        <label>Disciplina<select id="history-discipline"><option value="all">Todas</option><option value="alfa">Disciplina Alfa</option><option value="beta">Disciplina Beta</option></select></label>
+        <label>Prioridad<select id="history-priority"><option value="all">Todas</option><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select></label>
+        <label>Estado<select id="history-status"><option value="all">Todos</option><option value="pendiente">Pendiente</option><option value="revision">En revisión</option><option value="cerrada">Cerrada</option></select></label>
+      </div>
+
+      <div class="history-layout">
+        <div class="record-list" id="history-list">
+          <button class="history-item is-selected" type="button" data-history="1" data-discipline="alfa" data-priority="alta" data-status="revision"><span><strong>Revisión de condición en EQ-001</strong><small>Hoy · Turno A · Zona 1</small></span><span class="priority priority-high">Alta</span></button>
+          <button class="history-item" type="button" data-history="2" data-discipline="beta" data-priority="media" data-status="pendiente"><span><strong>Observación durante recorrido</strong><small>Ayer · Turno B · Zona 2</small></span><span class="priority priority-medium">Media</span></button>
+          <button class="history-item" type="button" data-history="3" data-discipline="alfa" data-priority="baja" data-status="cerrada"><span><strong>Verificación completada</strong><small>22 ago · Turno A · Zona 1</small></span><span class="priority priority-low">Baja</span></button>
+        </div>
+
+        <article class="detail-card" id="history-detail">
+          <div class="record-top"><span class="tag tag-info">En revisión</span><span>Folio DEMO-001</span></div>
+          <h2>Revisión de condición en EQ-001</h2>
+          <img src="assets/images/evidencia-ficticia.svg" alt="Evidencia ficticia del registro de demostración">
+          <dl><div><dt>Descripción</dt><dd>Condición genérica detectada durante una inspección visual.</dd></div><div><dt>Clasificación</dt><dd>Disciplina Alfa · Observación</dd></div><div><dt>Ubicación</dt><dd>Zona 1 · EQ-001</dd></div><div><dt>Fecha de ocurrencia</dt><dd>24 ago 2026 · 10:18</dd></div><div><dt>Autor</dt><dd>Usuario Demo</dd></div></dl>
+        </article>
+      </div>
+      <p class="empty-state" id="history-empty" hidden>No hay registros para estos filtros.</p>
+    </section>
+
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Navegación principal" hidden>
+      <button type="button" data-go="jornada" data-nav="jornada"><span>⌂</span>Jornada</button>
+      <button type="button" data-go="captura" data-nav="captura"><span>＋</span>Captura</button>
+      <button type="button" data-go="borradores" data-nav="borradores"><span>□</span>Borradores</button>
+      <button type="button" data-go="historico" data-nav="historico"><span>≡</span>Histórico</button>
+    </nav>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript>Este prototipo necesita JavaScript para navegar entre sus pantallas.</noscript>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-label="BitaTurno">
+  <rect width="192" height="192" rx="44" fill="#123c36"/>
+  <path d="M48 45h61c22 0 37 12 37 31 0 12-6 21-16 26 13 5 20 15 20 29 0 22-17 36-43 36H48V45zm34 27v20h23c8 0 13-4 13-10s-5-10-13-10H82zm0 46v22h26c9 0 14-4 14-11s-5-11-14-11H82z" fill="#fff"/>
+  <circle cx="145" cy="49" r="14" fill="#e5a93d"/>
+</svg>
