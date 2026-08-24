@@ -1,0 +1,49 @@
+# Entorno y configuración local
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Python y Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Datos operacionales
+backups/
+exports/
+imports/
+logs/
+*.log
+transferencias/
+
+# Credenciales y certificados
+credentials*
+credenciales*
+secrets*
+secretos*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa*
+known_hosts
+
+# Editores y sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Evidencias temporales
+playwright-report/
+test-results/
