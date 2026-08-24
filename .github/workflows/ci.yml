@@ -47,5 +47,8 @@ jobs:
       - name: Ejecutar pruebas automatizadas
         run: python manage.py test
 
+      - name: Validar estructura y navegación del mockup
+        run: python ../tests/test_mockup.py
+
       - name: Comprobar migraciones pendientes
         run: python manage.py makemigrations --check --dry-run
