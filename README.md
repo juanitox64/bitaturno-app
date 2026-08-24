@@ -1,30 +1,190 @@
 # BitaTurno v0.3 — Sumativa 3
 
-BitaTurno es una propuesta académica para registrar, completar y consultar
-novedades asociadas a jornadas de trabajo.
+BitaTurno es una aplicación académica para capturar, completar, consultar y
+gestionar novedades asociadas a una jornada de trabajo. Esta etapa continúa el
+MVP web Django construido y verificado previamente, y añade un prototipo móvil
+navegable que permite estudiar la evolución futura del producto.
 
-## Problema
+## Problema que aborda
 
-Los registros de una jornada pueden quedar dispersos, incompletos o sin una
-clasificación uniforme. BitaTurno propone un flujo progresivo: capturar una
-observación, conservarla como borrador, completarla y consultarla posteriormente
-en una bitácora.
+Las observaciones de una jornada pueden quedar dispersas, incompletas o sin una
+clasificación uniforme. BitaTurno propone un flujo progresivo: registrar
+rápidamente una descripción o fotografía, conservarla como borrador, completar
+su clasificación y consultarla después en una bitácora.
 
-## Objetivo de esta etapa
+## Objetivo
 
-Esta versión continuará el MVP web Django desarrollado en las evaluaciones
-anteriores y añadirá un prototipo móvil navegable para estudiar una futura
-experiencia de captura en terreno.
+Mantener un CRUD web pequeño y comprobable, y representar de forma honesta cómo
+podría extenderse hacia una experiencia móvil para captura rápida y trabajo con
+conectividad intermitente.
 
-La URL pública de GitHub Pages se incorporará después de verificar el
-despliegue.
+## Accesos públicos
 
-## Alcance inicial
+- Repositorio: <https://github.com/juanitox64/bitaturno-app>
+- Mockup móvil: <https://juanitox64.github.io/bitaturno-app/>
 
-- Copia pública y sanitizada del MVP web existente.
-- Mockup móvil estático y navegable.
-- Propuesta documentada de integración móvil/web.
-- Automatización de pruebas y publicación académica.
+El sitio de GitHub Pages es un prototipo estático. No ejecuta Django ni se
+conecta a una base de datos.
+
+## Estado de los componentes
+
+| Componente | Estado |
+|---|---|
+| MVP web Django | Implementado |
+| CRUD | Implementado |
+| Mockup móvil | Navegable |
+| GitHub Pages | Publicación automatizada |
+| API móvil/web | Propuesta |
+| Captura offline | Representada en mockup |
+| Sincronización real | No implementada |
+| Aplicación móvil nativa | No implementada |
+| IA | Fuera del alcance de esta entrega |
+
+## Funciones reales del MVP web
+
+- Inicio y cierre de sesión con usuarios Django.
+- Administración de catálogos y cuentas desde Django Admin.
+- Formulario progresivo para guardar borradores o finalizar registros.
+- Fotografía opcional JPEG, PNG o WEBP con validación y optimización.
+- Edición y eliminación confirmada de borradores propios.
+- Histórico de novedades registradas.
+- Filtros por disciplina, turno, prioridad y estado operacional.
+- Cambio separado del estado operacional y fechas de cierre.
+- Contadores de registradas, pendientes, en revisión, cerradas y borradores.
+- Permisos para proteger borradores ajenos y registros finalizados.
+- Transferencia portable administrada, con inspección y simulación previa.
+- 57 pruebas automatizadas.
+
+El código real se encuentra en [`web/`](web/).
+
+## Funciones representadas en el mockup
+
+El prototipo disponible en [`docs/`](docs/) representa:
+
+- inicio de sesión demostrativo;
+- vista **Mi jornada**;
+- captura rápida de texto y fotografía;
+- borradores y clasificación posterior;
+- estados de conectividad y sincronización simulados;
+- resumen manual de jornada;
+- histórico, filtros y detalle.
+
+La PWA almacena en caché los archivos estáticos para permitir navegación básica
+después de la primera carga. No conserva capturas reales ni sincroniza datos.
+
+## Tecnologías
+
+- Python 3.11 compatible.
+- Django 5.2 LTS.
+- SQLite para ejecución local.
+- Pillow para validación y optimización de imágenes.
+- HTML, CSS y JavaScript sin frameworks ni CDN para el mockup.
+- GitHub Actions para pruebas y GitHub Pages.
+
+## Estructura
+
+```text
+bitaturno-app/
+├── web/                    # MVP Django real
+├── docs/                   # Mockup móvil publicado en Pages
+├── documentation/          # Arquitectura, alcance, pruebas y evidencias
+├── .github/workflows/      # CI y despliegue del sitio estático
+├── requirements.txt
+└── requirements-lock.txt
+```
+
+## Instalación local del MVP web
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/juanitox64/bitaturno-app.git
+Set-Location .\bitaturno-app
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+Set-Location .\web
+..\.venv\Scripts\python.exe manage.py migrate
+..\.venv\Scripts\python.exe manage.py createsuperuser
+..\.venv\Scripts\python.exe manage.py runserver
+```
+
+Abrir <http://127.0.0.1:8000/>. Para detener el servidor, presionar `Ctrl+C`.
+
+### Linux o macOS
+
+```bash
+git clone https://github.com/juanitox64/bitaturno-app.git
+cd bitaturno-app
+python3 -m venv .venv
+./.venv/bin/python -m pip install -r requirements-lock.txt
+cd web
+../.venv/bin/python manage.py migrate
+../.venv/bin/python manage.py createsuperuser
+../.venv/bin/python manage.py runserver
+```
+
+## Variables de entorno
+
+La ejecución local con `DJANGO_DEBUG=1` genera una clave efímera y no necesita
+un archivo `.env`. Para una configuración persistente, usar `.env.example` como
+referencia y definir una clave propia fuera del repositorio.
+
+Nunca se debe versionar `.env`, bases de datos, fotografías, exportaciones ni
+credenciales.
+
+## Pruebas
+
+Los comandos deben ejecutarse desde `web/` para que Django descubra toda la
+batería:
+
+```powershell
+Set-Location .\web
+..\.venv\Scripts\python.exe manage.py check
+..\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
+..\.venv\Scripts\python.exe manage.py migrate
+..\.venv\Scripts\python.exe manage.py test
+```
+
+El resultado esperado es `57 test(s)` y `OK`.
+
+## Servir el mockup localmente
+
+Desde la raíz del repositorio:
+
+```powershell
+.\.venv\Scripts\python.exe -m http.server 8080 --directory docs
+```
+
+Abrir <http://127.0.0.1:8080/>. Servirlo por HTTP permite comprobar también el
+registro del service worker.
+
+## Integración móvil/web propuesta
+
+La evolución prevista utiliza una aplicación móvil para captura y consulta
+rápida, una cola local para conectividad intermitente, una API REST futura y el
+backend Django como servicio central. Los UUID ya presentes en el dominio
+permiten proponer idempotencia y prevención de duplicados.
+
+La propuesta completa se encuentra en
+[`documentation/integracion-movil-web.md`](documentation/integracion-movil-web.md).
+
+## Limitaciones
+
+- El mockup no autentica usuarios ni envía información.
+- Los datos mostrados son ficticios y se reinician al recargar.
+- No existe API REST en esta entrega.
+- No existe sincronización ni almacenamiento offline de novedades reales.
+- La PWA corresponde únicamente al sitio estático demostrativo.
+- El MVP usa SQLite y admite una fotografía por novedad.
+
+## Mejoras futuras
+
+- Aplicación móvil real con almacenamiento local.
+- API autenticada y versionada.
+- Sincronización idempotente y resolución de conflictos.
+- Notificaciones y trazabilidad ampliada.
+- Múltiples fotografías, sujeto a una revisión del alcance.
+- Funciones de IA únicamente en una etapa posterior y fuera de esta entrega.
 
 ## Integrantes
 
@@ -32,5 +192,5 @@ despliegue.
 - Rubén Delgado Arriagada.
 - Guillermo Fuentes Jara.
 
-> Estado: estructura inicial de la propuesta. El MVP y el mockup se incorporan
-> mediante commits posteriores para mantener trazabilidad académica.
+Las cuentas GitHub de los demás integrantes no se inventan ni se asocian sin su
+confirmación.
