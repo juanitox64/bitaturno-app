@@ -48,8 +48,9 @@ Las coincidencias correspondientes a nombres de variables, valores ficticios o
 integrantes exigidos por la evaluación se revisan por contexto. Este reporte no
 reproduce ningún valor sensible detectado.
 
-## Resultado inicial
+## Resultado final
 
-La revisión inicial no encontró datos operacionales ni secretos reales dentro
-de los archivos preparados para el repositorio. Se repetirá la comprobación
-sobre la lista completa de archivos antes del cierre.
+La revisión completa de los archivos versionados no encontró datos operacionales
+ni secretos reales. La verificación se repitió antes del commit final y las
+evidencias visuales fueron revisadas para confirmar que utilizan información
+ficticia o datos públicos del propio repositorio.
