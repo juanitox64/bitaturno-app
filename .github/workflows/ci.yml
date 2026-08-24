@@ -1,0 +1,51 @@
+name: Pruebas del MVP web
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  django:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DJANGO_DEBUG: "1"
+      DJANGO_DB_PATH: ${{ runner.temp }}/bitaturno-ci.sqlite3
+      DJANGO_MEDIA_ROOT: ${{ runner.temp }}/media
+      DJANGO_STATIC_ROOT: ${{ runner.temp }}/static
+      DATA_TRANSFER_WORK_ROOT: ${{ runner.temp }}/transferencias
+
+    defaults:
+      run:
+        working-directory: web
+
+    steps:
+      - name: Obtener el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Instalar dependencias verificadas
+        run: python -m pip install -r ../requirements-lock.txt
+
+      - name: Aplicar migraciones en SQLite temporal
+        run: python manage.py migrate --noinput
+
+      - name: Ejecutar comprobación de Django
+        run: python manage.py check
+
+      - name: Ejecutar pruebas automatizadas
+        run: python manage.py test
+
+      - name: Comprobar migraciones pendientes
+        run: python manage.py makemigrations --check --dry-run
