@@ -1,0 +1,54 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Resultado de transferencia · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Transferencia de datos</p>
+        <h1>{{ transferencia.get_estado_display }}</h1>
+        <p class="texto-secundario">{{ transferencia.nombre_paquete }}</p>
+    </div>
+</div>
+
+{% if transferencia.estado == "SIMULADA" %}
+    <div class="aviso aviso-borrador">
+        Simulación completada: la transacción fue revertida y no se modificaron
+        datos ni archivos.
+    </div>
+{% else %}
+    <div class="mensaje mensaje-success">
+        Importación completada de forma transaccional.
+    </div>
+{% endif %}
+
+<section class="tarjeta">
+    <h2>Resultado</h2>
+    {% for seccion, valores in transferencia.resultado.conteos.items %}
+        <h3>{{ seccion }}</h3>
+        <ul>
+            <li>Creados: {{ valores.creados }}</li>
+            <li>Actualizados: {{ valores.actualizados }}</li>
+            <li>Omitidos: {{ valores.omitidos }}</li>
+            <li>Existentes preservados: {{ valores.preservados }}</li>
+        </ul>
+    {% empty %}
+        <p>No había registros que aplicar en las secciones seleccionadas.</p>
+    {% endfor %}
+    {% if transferencia.respaldo_previo %}
+        <p><strong>Respaldo previo:</strong> registrado en el servidor.</p>
+    {% endif %}
+</section>
+
+<div class="acciones">
+    {% if token %}
+        <a class="boton boton-primario" href="{% url 'data_transfer:inspeccionar' token %}">
+            Volver al paquete
+        </a>
+    {% endif %}
+    <a class="boton boton-secundario" href="{% url 'data_transfer:inicio' %}">
+        Ir al historial
+    </a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,103 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Transferencia de datos · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Administración</p>
+        <h1>Transferencia de datos</h1>
+        <p class="texto-secundario">
+            Exporte paquetes portables o inspeccione una importación antes de
+            modificar datos.
+        </p>
+    </div>
+</div>
+
+<div class="cuadricula-transferencias">
+    <section class="tarjeta">
+        <h2>Exportar</h2>
+        <p class="texto-secundario">
+            El paquete nunca incluye contraseñas, hashes ni privilegios.
+        </p>
+        <form method="post" action="{% url 'data_transfer:exportar' %}">
+            {% csrf_token %}
+            {% if exportacion_form.non_field_errors %}
+                <div class="errores-formulario">{{ exportacion_form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in exportacion_form %}
+                <div class="campo{% if field.errors %} campo-error{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                    {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+                </div>
+            {% endfor %}
+            <button class="boton boton-primario" type="submit">Crear paquete</button>
+        </form>
+    </section>
+
+    <section class="tarjeta">
+        <h2>Importar</h2>
+        <p class="texto-secundario">
+            Primero se validará el ZIP. Después podrá elegir las secciones,
+            simular y, si corresponde, confirmar.
+        </p>
+        <form method="post" action="{% url 'data_transfer:cargar' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if carga_form.non_field_errors %}
+                <div class="errores-formulario">{{ carga_form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in carga_form %}
+                <div class="campo{% if field.errors %} campo-error{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                    {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+                </div>
+            {% endfor %}
+            <button class="boton boton-secundario" type="submit">Inspeccionar paquete</button>
+        </form>
+    </section>
+</div>
+
+<section class="seccion-transferencias">
+    <h2>Historial reciente</h2>
+    {% if historial %}
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Paquete</th>
+                        <th>Usuario</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in historial %}
+                        <tr>
+                            <td>{{ item.fecha_inicio|date:"d-m-Y H:i" }}</td>
+                            <td>{{ item.get_tipo_display }}</td>
+                            <td>{{ item.get_estado_display }}</td>
+                            <td>{{ item.nombre_paquete }}</td>
+                            <td>{{ item.usuario.username }}</td>
+                            <td>
+                                <a href="{% url 'data_transfer:detalle' item.pk %}">Ver</a>
+                                {% if item.tipo == "EXPORTACION" and item.estado == "COMPLETADA" %}
+                                    · <a href="{% url 'data_transfer:descargar' item.pk %}">Descargar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="estado-vacio">Todavía no existen transferencias registradas.</div>
+    {% endif %}
+</section>
+{% endblock %}
+

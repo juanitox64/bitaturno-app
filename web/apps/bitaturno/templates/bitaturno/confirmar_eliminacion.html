@@ -1,0 +1,19 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Confirmar eliminación · BitaTurno{% endblock %}
+
+{% block content %}
+<section class="tarjeta confirmacion">
+    <p class="etiqueta">Borrador #{{ novedad.pk }}</p>
+    <h1>Confirmar eliminación</h1>
+    <p>Se eliminará el borrador <strong>{{ novedad.titulo|default:"Sin título" }}</strong>.</p>
+    <p class="texto-secundario">Las novedades registradas no pueden eliminarse desde esta pantalla.</p>
+
+    <form method="post" class="acciones-formulario">
+        {% csrf_token %}
+        <a class="boton boton-secundario" href="{% url 'bitaturno:editar_borrador' novedad.pk %}">Cancelar</a>
+        <button class="boton boton-peligro" type="submit">Sí, eliminar borrador</button>
+    </form>
+</section>
+{% endblock %}
+

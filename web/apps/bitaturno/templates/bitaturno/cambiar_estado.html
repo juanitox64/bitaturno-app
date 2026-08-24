@@ -1,0 +1,25 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Cambiar estado · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Novedad #{{ novedad.pk }}</p>
+        <h1>Cambiar estado operacional</h1>
+        <p class="texto-secundario">{{ novedad.titulo }}</p>
+    </div>
+</div>
+
+<form method="post" class="tarjeta formulario formulario-corto" novalidate>
+    {% csrf_token %}
+    <p>Estado actual: <strong>{{ novedad.get_estado_operacional_display }}</strong></p>
+    {% include "bitaturno/partials/campos_formulario.html" with form=form %}
+    <p class="texto-secundario">Al cerrar se registra la fecha de cierre. Si se reabre, esa fecha se limpia.</p>
+    <div class="acciones-formulario">
+        <a class="boton boton-secundario" href="{% url 'bitaturno:detalle' novedad.pk %}">Cancelar</a>
+        <button class="boton boton-primario" type="submit">Guardar estado</button>
+    </div>
+</form>
+{% endblock %}
+

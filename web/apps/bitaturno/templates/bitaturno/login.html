@@ -1,0 +1,19 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Iniciar sesión · BitaTurno{% endblock %}
+
+{% block content %}
+<section class="tarjeta tarjeta-login">
+    <p class="etiqueta">Acceso local</p>
+    <h1>Iniciar sesión</h1>
+    <p class="texto-secundario">Ingrese con una cuenta administrada desde Django Admin.</p>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include "bitaturno/partials/campos_formulario.html" with form=form %}
+        <button class="boton boton-primario boton-bloque" type="submit">Ingresar</button>
+    </form>
+</section>
+{% endblock %}
+

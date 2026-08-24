@@ -1,0 +1,64 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Histórico · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Bitácora oficial</p>
+        <h1>Histórico de novedades</h1>
+        <p class="texto-secundario">Esta vista incluye únicamente novedades finalizadas.</p>
+    </div>
+    <a class="boton boton-primario" href="{% url 'bitaturno:nueva' %}">Nueva novedad</a>
+</div>
+
+<form method="get" class="tarjeta filtros">
+    {% for field in filtros %}
+        <div class="campo">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+        </div>
+    {% endfor %}
+    <div class="acciones-filtros">
+        <button class="boton boton-primario" type="submit">Filtrar</button>
+        <a class="boton boton-secundario" href="{% url 'bitaturno:historico' %}">Limpiar</a>
+    </div>
+</form>
+
+{% if novedades %}
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Disciplina</th>
+                    <th>Turno</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Captura</th>
+                    <th>Autor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for novedad in novedades %}
+                    <tr>
+                        <td><a href="{% url 'bitaturno:detalle' novedad.pk %}">{{ novedad.titulo }}</a></td>
+                        <td>{{ novedad.disciplina }}</td>
+                        <td>{{ novedad.turno }}</td>
+                        <td><span class="insignia prioridad-{{ novedad.prioridad|lower }}">{{ novedad.get_prioridad_display }}</span></td>
+                        <td><span class="insignia estado-{{ novedad.estado_operacional|lower }}">{{ novedad.get_estado_operacional_display }}</span></td>
+                        <td>{{ novedad.fecha_captura|date:"d/m/Y H:i" }}</td>
+                        <td>{{ novedad.creado_por.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="estado-vacio">
+        <h2>No hay novedades registradas</h2>
+        <p>No existen resultados para los filtros seleccionados.</p>
+    </div>
+{% endif %}
+{% endblock %}
+

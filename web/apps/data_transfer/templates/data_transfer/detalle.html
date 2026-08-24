@@ -1,0 +1,42 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Detalle de transferencia · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Historial</p>
+        <h1>{{ transferencia.get_tipo_display }}</h1>
+        <p class="texto-secundario">{{ transferencia.nombre_paquete }}</p>
+    </div>
+    <a class="boton boton-secundario" href="{% url 'data_transfer:inicio' %}">Volver</a>
+</div>
+
+<section class="tarjeta detalle">
+    <dl class="datos">
+        <div><dt>Estado</dt><dd>{{ transferencia.get_estado_display }}</dd></div>
+        <div><dt>Usuario</dt><dd>{{ transferencia.usuario.username }}</dd></div>
+        <div><dt>Inicio</dt><dd>{{ transferencia.fecha_inicio|date:"d-m-Y H:i:s" }}</dd></div>
+        <div><dt>Término</dt><dd>{{ transferencia.fecha_fin|date:"d-m-Y H:i:s"|default:"—" }}</dd></div>
+        <div><dt>Política</dt><dd>{{ transferencia.get_politica_display|default:"—" }}</dd></div>
+        <div><dt>Tamaño</dt><dd>{{ transferencia.tamano_paquete|filesizeformat }}</dd></div>
+        <div><dt>Secciones</dt><dd>{{ transferencia.secciones|join:", " }}</dd></div>
+        <div><dt>SHA-256</dt><dd class="texto-monoespaciado">{{ transferencia.sha256_paquete|default:"—" }}</dd></div>
+    </dl>
+    {% if transferencia.errores %}
+        <div class="mensaje mensaje-error">{{ transferencia.errores }}</div>
+    {% endif %}
+    {% if transferencia.resultado.mensaje %}
+        <p>{{ transferencia.resultado.mensaje }}</p>
+    {% endif %}
+</section>
+
+{% if transferencia.tipo == "EXPORTACION" and transferencia.estado == "COMPLETADA" %}
+    <div class="acciones">
+        <a class="boton boton-primario" href="{% url 'data_transfer:descargar' transferencia.pk %}">
+            Descargar paquete
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
+

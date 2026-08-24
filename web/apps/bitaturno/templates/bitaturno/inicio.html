@@ -1,0 +1,56 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Inicio · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Resumen</p>
+        <h1>Bitácora de turnos</h1>
+        <p class="texto-secundario">Contadores simples de las novedades registradas y sus borradores.</p>
+    </div>
+    <a class="boton boton-primario" href="{% url 'bitaturno:nueva' %}">Nueva novedad</a>
+</div>
+
+<section class="cuadricula-contadores" aria-label="Contadores de novedades">
+    <a class="contador" href="{% url 'bitaturno:historico' %}">
+        <span>Total registradas</span>
+        <strong>{{ resumen.total_registradas }}</strong>
+    </a>
+    <a class="contador" href="{% url 'bitaturno:historico' %}?estado_operacional=PENDIENTE">
+        <span>Pendientes</span>
+        <strong>{{ resumen.pendientes }}</strong>
+    </a>
+    <a class="contador" href="{% url 'bitaturno:historico' %}?estado_operacional=EN_REVISION">
+        <span>En revisión</span>
+        <strong>{{ resumen.en_revision }}</strong>
+    </a>
+    <a class="contador" href="{% url 'bitaturno:historico' %}?estado_operacional=CERRADA">
+        <span>Cerradas</span>
+        <strong>{{ resumen.cerradas }}</strong>
+    </a>
+    <a class="contador contador-destacado" href="{% url 'bitaturno:mis_borradores' %}">
+        <span>Mis borradores</span>
+        <strong>{{ resumen.mis_borradores }}</strong>
+    </a>
+</section>
+
+<section class="tarjeta acciones-inicio">
+    <h2>Qué puede hacer</h2>
+    <div class="cuadricula-acciones">
+        <a href="{% url 'bitaturno:nueva' %}">
+            <strong>Capturar</strong>
+            <span>Guardar una descripción o fotografía y completar después.</span>
+        </a>
+        <a href="{% url 'bitaturno:mis_borradores' %}">
+            <strong>Completar</strong>
+            <span>Revisar los datos pendientes antes de finalizar.</span>
+        </a>
+        <a href="{% url 'bitaturno:historico' %}">
+            <strong>Consultar</strong>
+            <span>Filtrar novedades oficiales y cambiar su estado.</span>
+        </a>
+    </div>
+</section>
+{% endblock %}
+

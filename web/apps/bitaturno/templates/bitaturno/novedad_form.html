@@ -1,0 +1,60 @@
+{% extends "bitaturno/base.html" %}
+{% load static %}
+
+{% block title %}{% if es_edicion %}Completar borrador{% else %}Nueva novedad{% endif %} · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">{% if es_edicion %}Borrador #{{ novedad.pk }}{% else %}Captura progresiva{% endif %}</p>
+        <h1>{% if es_edicion %}Editar o completar borrador{% else %}Nueva novedad{% endif %}</h1>
+        <p class="texto-secundario">Puede guardar con una descripción o fotografía. Para finalizar debe completar los campos obligatorios.</p>
+    </div>
+</div>
+
+<div class="aviso aviso-borrador">
+    <strong>Este registro es un borrador hasta que use “Finalizar registro”.</strong>
+    Mientras siga como borrador no forma parte de la bitácora oficial ni de los contadores operacionales.
+</div>
+
+{% if es_edicion and novedad.campos_faltantes_finalizacion %}
+    <div class="aviso">
+        <strong>Falta para finalizar:</strong>
+        {{ novedad.campos_faltantes_finalizacion|join:", " }}.
+    </div>
+{% endif %}
+
+<div class="aviso" role="note">
+    <strong>Fotografía opcional:</strong>
+    puede seleccionar un archivo JPEG, PNG o WEBP de hasta 25 MB.
+    BitaTurno lo optimizará automáticamente a un máximo de 3 MB y 2048 píxeles,
+    manteniendo una calidad adecuada.
+</div>
+
+<p id="estado-optimizacion-fotografia" class="estado-fotografia" aria-live="polite"></p>
+
+<form method="post" enctype="multipart/form-data" class="tarjeta formulario" novalidate data-form-novedad>
+    {% csrf_token %}
+    {% include "bitaturno/partials/campos_formulario.html" with form=form %}
+
+    {% if es_edicion and novedad.fotografia %}
+        <div class="foto-actual">
+            <p><strong>Fotografía actual</strong></p>
+            <img src="{{ novedad.fotografia.url }}" alt="Fotografía del borrador">
+        </div>
+    {% endif %}
+
+    <div class="acciones-formulario">
+        <button class="boton boton-secundario" type="submit" name="accion" value="guardar_borrador">
+            Guardar borrador
+        </button>
+        <button class="boton boton-primario" type="submit" name="accion" value="finalizar">
+            Finalizar registro
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'bitaturno/js/optimizar-fotografia.js' %}" defer></script>
+{% endblock %}

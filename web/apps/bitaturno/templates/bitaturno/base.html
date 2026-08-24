@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}BitaTurno{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bitaturno/css/estilos.css' %}">
+</head>
+<body>
+    <header class="cabecera">
+        <div class="contenedor barra">
+            <a class="marca" href="{% if user.is_authenticated %}{% url 'bitaturno:inicio' %}{% else %}{% url 'bitaturno:login' %}{% endif %}">
+                BitaTurno
+                <span>v0.1</span>
+            </a>
+            {% if user.is_authenticated %}
+                <nav aria-label="Navegación principal">
+                    <a href="{% url 'bitaturno:inicio' %}">Inicio</a>
+                    <a href="{% url 'bitaturno:nueva' %}">Nueva novedad</a>
+                    <a href="{% url 'bitaturno:mis_borradores' %}">Mis borradores</a>
+                    <a href="{% url 'bitaturno:historico' %}">Histórico</a>
+                    {% if user.is_superuser or perms.data_transfer.can_manage_data_transfers %}
+                        <a href="{% url 'data_transfer:inicio' %}">Transferencia de datos</a>
+                    {% endif %}
+                    {% if user.is_staff %}
+                        <a href="{% url 'admin:index' %}">Administración</a>
+                    {% endif %}
+                    <form method="post" action="{% url 'bitaturno:logout' %}" class="form-salir">
+                        {% csrf_token %}
+                        <button type="submit" class="enlace-boton">Cerrar sesión</button>
+                    </form>
+                </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="contenedor contenido">
+        {% if user.is_authenticated %}
+            <p class="sesion">Sesión: <strong>{{ user.username }}</strong></p>
+        {% endif %}
+
+        {% if messages %}
+            <div aria-live="polite">
+                {% for message in messages %}
+                    <div class="mensaje mensaje-{{ message.tags|default:'info' }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="pie">
+        <div class="contenedor">Aplicación académica local · BitaTurno v0.1</div>
+    </footer>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

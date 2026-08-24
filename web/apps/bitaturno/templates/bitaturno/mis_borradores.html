@@ -1,0 +1,48 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Mis borradores · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Trabajo pendiente</p>
+        <h1>Mis borradores</h1>
+        <p class="texto-secundario">Solo usted puede editar o eliminar estos borradores desde la aplicación.</p>
+    </div>
+    <a class="boton boton-primario" href="{% url 'bitaturno:nueva' %}">Nueva novedad</a>
+</div>
+
+<div class="aviso aviso-borrador">
+    Los borradores aún no forman parte de la bitácora oficial.
+</div>
+
+{% if borradores %}
+    <div class="lista-tarjetas">
+        {% for borrador in borradores %}
+            <article class="tarjeta borrador">
+                <div>
+                    <p class="etiqueta">Borrador #{{ borrador.pk }}</p>
+                    <h2>{{ borrador.titulo|default:"Sin título" }}</h2>
+                    <p>{{ borrador.descripcion_inicial|default:"Borrador con fotografía"|truncatechars:180 }}</p>
+                    <p class="texto-secundario">Actualizado: {{ borrador.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
+                    {% with faltantes=borrador.campos_faltantes_finalizacion %}
+                        {% if faltantes %}
+                            <p><strong>Falta:</strong> {{ faltantes|join:", " }}.</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="acciones">
+                    <a class="boton boton-primario" href="{% url 'bitaturno:editar_borrador' borrador.pk %}">Completar</a>
+                    <a class="boton boton-peligro" href="{% url 'bitaturno:eliminar_borrador' borrador.pk %}">Eliminar</a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="estado-vacio">
+        <h2>No tiene borradores</h2>
+        <p>Puede iniciar una captura y guardarla para completarla después.</p>
+    </div>
+{% endif %}
+{% endblock %}
+

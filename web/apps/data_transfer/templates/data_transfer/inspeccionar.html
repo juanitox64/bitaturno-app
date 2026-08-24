@@ -1,0 +1,61 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Inspeccionar paquete · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">Importación</p>
+        <h1>Paquete validado</h1>
+        <p class="texto-secundario">{{ nombre }}</p>
+    </div>
+    <a class="boton boton-secundario" href="{% url 'data_transfer:inicio' %}">Volver</a>
+</div>
+
+<div class="aviso aviso-borrador">
+    La inspección no modificó la base de datos. Ejecute primero una simulación.
+</div>
+
+<section class="tarjeta resumen-paquete">
+    <h2>Resumen verificado</h2>
+    <dl class="datos">
+        <div><dt>Formato</dt><dd>{{ inspeccion.manifest.formato }}</dd></div>
+        <div><dt>Versión</dt><dd>{{ inspeccion.manifest.version }}</dd></div>
+        <div><dt>Tamaño</dt><dd>{{ inspeccion.tamano|filesizeformat }}</dd></div>
+        <div><dt>SHA-256</dt><dd class="texto-monoespaciado">{{ inspeccion.sha256 }}</dd></div>
+        {% for seccion, total in inspeccion.conteos.items %}
+            <div><dt>{{ seccion }}</dt><dd>{{ total }}</dd></div>
+        {% endfor %}
+    </dl>
+</section>
+
+<section class="tarjeta formulario formulario-transferencia">
+    <h2>Opciones</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="errores-formulario">{{ form.non_field_errors }}</div>
+        {% endif %}
+        {% for field in form %}
+            <div class="campo{% if field.errors %} campo-error{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+            </div>
+        {% endfor %}
+        <div class="acciones-formulario">
+            <button class="boton boton-secundario" type="submit" name="accion" value="cancelar">
+                Cancelar
+            </button>
+            <button class="boton boton-secundario" type="submit" name="accion" value="simular">
+                Simular importación
+            </button>
+            <button class="boton boton-peligro" type="submit" name="accion" value="importar">
+                IMPORTAR
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}
+

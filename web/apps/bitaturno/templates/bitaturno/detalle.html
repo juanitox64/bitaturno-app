@@ -1,0 +1,69 @@
+{% extends "bitaturno/base.html" %}
+
+{% block title %}Detalle de novedad · BitaTurno{% endblock %}
+
+{% block content %}
+<div class="encabezado-pagina">
+    <div>
+        <p class="etiqueta">{{ novedad.get_estado_registro_display }} #{{ novedad.pk }}</p>
+        <h1>{{ novedad.titulo|default:"Sin título" }}</h1>
+    </div>
+    <div class="acciones">
+        {% if novedad.es_borrador and novedad.creado_por_id == user.id %}
+            <a class="boton boton-primario" href="{% url 'bitaturno:editar_borrador' novedad.pk %}">Editar borrador</a>
+            <a class="boton boton-peligro" href="{% url 'bitaturno:eliminar_borrador' novedad.pk %}">Eliminar</a>
+        {% elif not novedad.es_borrador %}
+            <a class="boton boton-primario" href="{% url 'bitaturno:cambiar_estado' novedad.pk %}">Cambiar estado</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if novedad.es_borrador %}
+    <div class="aviso aviso-borrador">
+        <strong>Borrador:</strong> esta captura aún no forma parte de la bitácora oficial.
+        {% with faltantes=novedad.campos_faltantes_finalizacion %}
+            {% if faltantes %} Falta: {{ faltantes|join:", " }}.{% endif %}
+        {% endwith %}
+    </div>
+{% endif %}
+
+<article class="tarjeta detalle">
+    <section>
+        <h2>Descripción original</h2>
+        <p class="descripcion">{{ novedad.descripcion_inicial|default:"Sin descripción" }}</p>
+    </section>
+
+    {% if novedad.fotografia %}
+        <section>
+            <h2>Fotografía</h2>
+            <img class="fotografia-detalle" src="{{ novedad.fotografia.url }}" alt="Fotografía asociada a la novedad">
+        </section>
+    {% endif %}
+
+    <section>
+        <h2>Clasificación</h2>
+        <dl class="datos">
+            <div><dt>Disciplina</dt><dd>{{ novedad.disciplina|default:"No informada" }}</dd></div>
+            <div><dt>Tipo de novedad</dt><dd>{{ novedad.tipo_novedad|default:"No informado" }}</dd></div>
+            <div><dt>Turno</dt><dd>{{ novedad.turno|default:"No informado" }}</dd></div>
+            <div><dt>Área</dt><dd>{{ novedad.area|default:"No informada" }}</dd></div>
+            <div><dt>Equipo</dt><dd>{{ novedad.equipo|default:"No informado" }}</dd></div>
+            <div><dt>Prioridad</dt><dd>{{ novedad.get_prioridad_display|default:"No informada" }}</dd></div>
+            <div><dt>Estado operacional</dt><dd>{{ novedad.get_estado_operacional_display|default:"No aplica" }}</dd></div>
+            <div><dt>Creado por</dt><dd>{{ novedad.creado_por.username }}</dd></div>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Fechas</h2>
+        <dl class="datos">
+            <div><dt>Ocurrencia informada</dt><dd>{{ novedad.fecha_ocurrencia|date:"d/m/Y H:i"|default:"No informada" }}</dd></div>
+            <div><dt>Captura automática</dt><dd>{{ novedad.fecha_captura|date:"d/m/Y H:i" }}</dd></div>
+            <div><dt>Última actualización</dt><dd>{{ novedad.fecha_actualizacion|date:"d/m/Y H:i" }}</dd></div>
+            <div><dt>Finalización</dt><dd>{{ novedad.fecha_finalizacion|date:"d/m/Y H:i"|default:"No finalizada" }}</dd></div>
+            <div><dt>Cierre</dt><dd>{{ novedad.fecha_cierre|date:"d/m/Y H:i"|default:"No cerrada" }}</dd></div>
+        </dl>
+    </section>
+</article>
+{% endblock %}
+
