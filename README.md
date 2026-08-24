@@ -33,7 +33,7 @@ conecta a una base de datos.
 | MVP web Django | Implementado |
 | CRUD | Implementado |
 | Mockup móvil | Navegable |
-| GitHub Pages | Publicación automatizada |
+| GitHub Pages | Publicado |
 | API móvil/web | Propuesta |
 | Captura offline | Representada en mockup |
 | Sincronización real | No implementada |
