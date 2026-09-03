@@ -1,0 +1,215 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #edf3f0;
+}
+
+ion-toolbar {
+  --background: #123c36;
+  --color: #ffffff;
+}
+
+.toolbar-title {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+ion-title small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  opacity: 0.78;
+}
+
+.app-content {
+  --background: #f6faf8;
+}
+
+.content-shell {
+  width: min(100%, 760px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 1.15rem 1rem 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: #1f665a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.login-content {
+  --background: linear-gradient(155deg, #dfeae6 0 36%, #f8fbf9 36%);
+}
+
+.login-shell {
+  width: min(100%, 460px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 3rem 1rem 2rem;
+}
+
+.brand-block {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.brand-block h1 {
+  margin: 0.35rem 0;
+  font-size: 2.45rem;
+}
+
+.brand-block p:last-child,
+.welcome-panel p {
+  color: #62736e;
+  line-height: 1.5;
+}
+
+.brand-mark {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1rem;
+  place-items: center;
+  border-radius: 21px;
+  color: #ffffff;
+  background: #123c36;
+  box-shadow: 0 16px 38px rgba(18, 60, 54, 0.2);
+  font-size: 1.55rem;
+  font-weight: 900;
+}
+
+.login-card,
+.metric-grid ion-card,
+.action-list,
+.form-list,
+.filter-list {
+  border: 1px solid #d8e2de;
+  box-shadow: 0 8px 24px rgba(18, 60, 54, 0.08);
+}
+
+.demo-badge,
+.pending-notice {
+  margin-bottom: 1rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
+  color: #6c4a0e;
+  background: #fff7e6;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.privacy-note,
+.module-meta {
+  display: block;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.form-error,
+.module-message {
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+}
+
+.primary-action {
+  margin-top: 1rem;
+  --border-radius: 13px;
+  min-height: 48px;
+  font-weight: 800;
+}
+
+.welcome-panel {
+  padding: 0.3rem 0.25rem 0.8rem;
+}
+
+.welcome-panel h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 -0.5rem 1rem;
+}
+
+.metric-grid ion-card {
+  margin: 0;
+  text-align: center;
+}
+
+.metric-grid strong,
+.metric-grid span {
+  display: block;
+}
+
+.metric-grid strong {
+  color: #123c36;
+  font-size: 2rem;
+}
+
+.metric-grid span {
+  margin-top: 0.2rem;
+  color: #62736e;
+  font-size: 0.78rem;
+}
+
+.action-list ion-icon {
+  color: #1f665a;
+}
+
+.pending-notice {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.pending-notice ion-icon {
+  flex: 0 0 auto;
+  font-size: 1.4rem;
+}
+
+.pending-notice strong,
+.pending-notice ion-note {
+  display: block;
+}
+
+.pending-notice ion-note {
+  margin-top: 0.25rem;
+  color: #6c4a0e;
+  line-height: 1.4;
+}
+
+.empty-state {
+  margin: 1rem 0;
+  padding: 1.2rem;
+  border: 1px dashed #aebfba;
+  border-radius: 14px;
+  color: #62736e;
+  background: #ffffff;
+  text-align: center;
+}
+
+ion-card-title {
+  margin-top: 0.55rem;
+  font-size: 1.05rem;
+}
+
+@media (min-width: 720px) {
+  .content-shell {
+    padding-top: 1.6rem;
+  }
+
+  .login-shell {
+    padding-top: 4rem;
+  }
+}
