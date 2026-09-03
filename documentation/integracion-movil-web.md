@@ -6,9 +6,14 @@ Esta propuesta extiende de forma gradual el dominio ya implementado por
 BitaTurno. No describe una API existente ni una sincronización operativa: define
 la arquitectura que podría conectar una futura aplicación móvil con el MVP web.
 
-## Aplicación móvil propuesta
+## Base móvil implementada en la Sumativa 4
 
-La aplicación móvil se orientaría a la captura y consulta rápida durante una
+Existe una base Ionic React que se ejecuta en navegador, conserva novedades
+ficticias en `localStorage` y separa la persistencia de las páginas mediante una
+interfaz. Login, Inicio y la capa común están implementados. Captura e histórico
+son esqueletos preparados para integración posterior.
+
+La evolución funcional se orienta a la captura y consulta rápida durante una
 jornada:
 
 - texto y una o más evidencias según el alcance futuro;
@@ -149,8 +154,9 @@ El servidor debería registrar quién creó o modificó un recurso, cuándo ocur
 qué UUID se utilizó y qué versión resultó. La aplicación mostraría la hora local
 de captura y la hora confirmada por el servidor como datos distintos.
 
-## Límite de esta entrega
+## Límites actuales
 
-GitHub Pages contiene únicamente el prototipo navegable. El service worker
-almacena archivos del sitio estático, pero no implementa una base local de
-novedades, una cola real, autenticación, API ni transferencia de fotografías.
+GitHub Pages conserva el prototipo estático v0.3. De forma separada, `mobile/`
+contiene la base Ionic `0.4.0-rc.1` con persistencia local de novedades ficticias.
+Ninguno de los dos implementa una cola real, autenticación, API, sincronización
+ni transferencia remota de fotografías.

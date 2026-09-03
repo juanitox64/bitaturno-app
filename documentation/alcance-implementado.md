@@ -24,6 +24,20 @@
 - Automatización de CI y GitHub Pages.
 - Documentación de arquitectura e integración.
 
+### Base híbrida `0.4.0-rc.1`
+
+- Proyecto Ionic 9 con React y TypeScript.
+- Login e Inicio demostrativos con componentes Ionic.
+- Sesión local que no almacena la contraseña.
+- Modelo y contrato común de novedades.
+- Repositorio `localStorage` versionado y probado.
+- Proveedor de estado, hook, validaciones y rutas protegidas.
+- Esqueletos compilables de captura e histórico para trabajo colaborativo.
+- CI móvil y build preparado para AWS Amplify.
+
+Los módulos de captura/borradores e histórico/detalle no están completos y el
+archivo de Amplify no demuestra un despliegue real.
+
 ## Representado
 
 Las siguientes funciones aparecen en la interfaz para explicar la experiencia
@@ -41,8 +55,7 @@ El mockup usa datos ficticios en memoria y los reinicia al recargar.
 
 ## Futuro
 
-- Aplicación móvil real.
-- Persistencia local de capturas.
+- Completar los módulos Ionic de captura e histórico.
 - API REST autenticada.
 - Sincronización, reintentos e idempotencia operativa.
 - Resolución de conflictos entre dispositivos.
@@ -54,4 +67,5 @@ El mockup usa datos ficticios en memoria y los reinicia al recargar.
 
 Toda evidencia e informe debe usar las palabras **implementado**,
 **representado** o **propuesto** según corresponda. La navegación visible en
-GitHub Pages no demuestra que exista un backend móvil ni sincronización real.
+GitHub Pages y la persistencia del proyecto Ionic no demuestran que exista un
+backend móvil, autenticación real ni sincronización.

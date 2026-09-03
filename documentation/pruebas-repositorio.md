@@ -153,3 +153,32 @@ público. Por ello, la evidencia confirma la configuración de caché y la
 navegación online, pero no se presenta como prueba de una aplicación móvil
 offline. En cualquier caso, las capturas del mockup no se persisten ni se
 sincronizan realmente.
+
+## Base Ionic de Sumativa 4
+
+El 3 de septiembre de 2026 se agregó una base Ionic independiente del mockup y
+del MVP Django. La regresión local confirmó:
+
+```text
+npm ci: 265 paquetes instalados desde el archivo de bloqueo
+npm run lint: OK, sin advertencias
+npm run test -- --run: 13 pruebas, OK (16.54 s)
+npm run build: OK
+python tests/test_mockup.py: 9 pruebas, OK (0.019 s)
+python manage.py check: sin observaciones
+python manage.py makemigrations --check --dry-run: No changes detected
+python manage.py migrate: todas las migraciones aplicadas desde una base vacía
+python manage.py test: 57 pruebas, OK (17.262 s)
+```
+
+También se recorrieron manualmente Login, Inicio, captura, borradores,
+histórico, detalle, cierre de sesión, rutas protegidas e identificador
+inexistente en una ventana de 360 × 800. La consola quedó sin mensajes y no se
+detectó desplazamiento horizontal.
+
+El build presenta una advertencia no bloqueante por un paquete JavaScript
+minificado mayor a 500 kB. La autenticación real, los módulos funcionales de
+captura e histórico y el despliegue AWS permanecen fuera de la rama base.
+
+El registro completo se conserva en
+[`sumativa4/VALIDACION_BASE.md`](sumativa4/VALIDACION_BASE.md).

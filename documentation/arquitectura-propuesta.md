@@ -3,11 +3,13 @@
 ## Estado actual
 
 ```mermaid
-flowchart LR
+flowchart TD
     U["Navegador local"] --> D["Aplicación Django"]
     D --> S["SQLite"]
     D --> F["Archivos de evidencia"]
     A["Django Admin"] --> D
+    M["Base Ionic React"] --> L["localStorage ficticio"]
+    M -. "sin integración actual" .-> D
 ```
 
 El MVP web es una aplicación monolítica local. Django procesa autenticación,
@@ -15,6 +17,10 @@ formularios, permisos, reglas de negocio, vistas, archivos y persistencia.
 
 GitHub Pages publica de manera independiente archivos HTML, CSS, JavaScript y
 SVG. El mockup no se comunica con Django.
+
+La base Ionic también se ejecuta de forma independiente. Su repositorio local
+está desacoplado detrás de una interfaz, pero todavía no existe una API que lo
+conecte con Django.
 
 ## Evolución propuesta
 

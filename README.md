@@ -1,9 +1,9 @@
-# BitaTurno v0.3 — Sumativa 3
+# BitaTurno `0.4.0-rc.1` — base colaborativa de Sumativa 4
 
 BitaTurno es una aplicación académica para capturar, completar, consultar y
 gestionar novedades asociadas a una jornada de trabajo. Esta etapa continúa el
-MVP web Django construido y verificado previamente, y añade un prototipo móvil
-navegable que permite estudiar la evolución futura del producto.
+MVP web Django construido y verificado previamente, conserva el prototipo móvil
+navegable v0.3 y añade una base híbrida Ionic preparada para trabajo colaborativo.
 
 ## Problema que aborda
 
@@ -28,17 +28,18 @@ conecta a una base de datos.
 
 ## Estado de los componentes
 
-| Componente | Estado |
+| Componente | Estado después de esta tarea |
 |---|---|
-| MVP web Django | Implementado |
-| CRUD | Implementado |
-| Mockup móvil | Navegable |
-| GitHub Pages | Publicado |
-| API móvil/web | Propuesta |
-| Captura offline | Representada en mockup |
-| Sincronización real | No implementada |
-| Aplicación móvil nativa | No implementada |
-| IA | Fuera del alcance de esta entrega |
+| MVP Django | Existente y conservado |
+| Mockup estático v0.3 | Existente |
+| Base Ionic v0.4 | Implementada |
+| Login e inicio Ionic | Implementados |
+| Persistencia local común | Implementada |
+| Captura y borradores | Estructura en integración |
+| Histórico y detalle | Estructura en integración |
+| Integración con API remota | No implementada |
+| Despliegue AWS Amplify | Preparado, no ejecutado |
+| Publicación nativa | Fuera del alcance |
 
 ## Funciones reales del MVP web
 
@@ -80,6 +81,8 @@ después de la primera carga. No conserva capturas reales ni sincroniza datos.
 - Pillow para validación y optimización de imágenes.
 - HTML, CSS y JavaScript sin frameworks ni CDN para el mockup.
 - GitHub Actions para pruebas y GitHub Pages.
+- Ionic 9, React 19, TypeScript y Vite para la base híbrida.
+- `localStorage` detrás de una interfaz de repositorio para el prototipo móvil.
 
 ## Estructura
 
@@ -87,8 +90,10 @@ después de la primera carga. No conserva capturas reales ni sincroniza datos.
 bitaturno-app/
 ├── web/                    # MVP Django real
 ├── docs/                   # Mockup móvil publicado en Pages
+├── mobile/                 # Base Ionic React 0.4.0-rc.1
 ├── documentation/          # Arquitectura, alcance, pruebas y evidencias
 ├── .github/workflows/      # CI y despliegue del sitio estático
+├── amplify.yml             # Preparación de build para AWS Amplify
 ├── requirements.txt
 └── requirements-lock.txt
 ```
@@ -147,6 +152,29 @@ Set-Location .\web
 
 El resultado esperado es `57 test(s)` y `OK`.
 
+## Aplicación híbrida Ionic
+
+Desde la raíz del repositorio:
+
+```powershell
+Set-Location .\mobile
+npm ci
+npm run lint
+npm run test -- --run
+npm run build
+npm run dev
+```
+
+La base implementa sesión demostrativa, Login, Inicio, dominio, persistencia
+local versionada, proveedor de estado y rutas protegidas. Los módulos de captura
+e histórico son esqueletos navegables en integración; su lógica final no forma
+parte de esta rama base.
+
+Las instrucciones colaborativas están en
+[`documentation/sumativa4/`](documentation/sumativa4/) y los resultados de la
+base están registrados en
+[`VALIDACION_BASE.md`](documentation/sumativa4/VALIDACION_BASE.md).
+
 ## Servir el mockup localmente
 
 Desde la raíz del repositorio:
@@ -171,26 +199,21 @@ La propuesta completa se encuentra en
 ## Limitaciones
 
 - El mockup no autentica usuarios ni envía información.
-- Los datos mostrados son ficticios y se reinician al recargar.
+- Los datos del mockup estático son ficticios y se reinician al recargar; los
+  datos ficticios de la base Ionic sí persisten localmente.
 - No existe API REST en esta entrega.
 - No existe sincronización ni almacenamiento offline de novedades reales.
 - La PWA corresponde únicamente al sitio estático demostrativo.
 - El MVP usa SQLite y admite una fotografía por novedad.
+- La base Ionic no tiene API, sincronización remota ni autenticación real.
+- Captura/borradores e histórico/detalle todavía no son módulos completos.
+- `amplify.yml` prepara el build, pero no demuestra un despliegue en AWS.
 
 ## Mejoras futuras
 
-- Aplicación móvil real con almacenamiento local.
+- Completar captura, borradores, histórico y detalle mediante cambios revisados.
 - API autenticada y versionada.
 - Sincronización idempotente y resolución de conflictos.
 - Notificaciones y trazabilidad ampliada.
 - Múltiples fotografías, sujeto a una revisión del alcance.
 - Funciones de IA únicamente en una etapa posterior y fuera de esta entrega.
-
-## Integrantes
-
-- Juan Condori Viza.
-- Rubén Delgado Arriagada.
-- Guillermo Fuentes Jara.
-
-Las cuentas GitHub de los demás integrantes no se inventan ni se asocian sin su
-confirmación.

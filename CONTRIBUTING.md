@@ -32,6 +32,19 @@ Para cambios en el mockup se debe recorrer al menos Login, Mi jornada, Nueva
 captura, Borradores, Completar, Resumen e Histórico, tanto en tamaño móvil como
 en escritorio.
 
+Para cambios en `mobile/`:
+
+```text
+npm ci
+npm run lint
+npm run test -- --run
+npm run build
+```
+
+Los cambios deben respetar el contrato en `documentation/sumativa4/`. Las
+modificaciones de dominio, persistencia, estado, rutas, tema o dependencias
+requieren una explicación técnica y una prueba del contrato afectado.
+
 ## Protección de datos
 
 Solo se permiten datos ficticios. No incorporar:
@@ -45,8 +58,3 @@ Solo se permiten datos ficticios. No incorporar:
 
 Antes de subir cambios, revisar `git status`, `git diff --cached` y la lista de
 archivos versionados.
-
-## Colaboradores
-
-Los integrantes se asocian al repositorio únicamente cuando entregan sus
-usuarios reales de GitHub. No se deben inventar cuentas.
