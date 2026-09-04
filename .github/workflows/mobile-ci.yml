@@ -1,0 +1,46 @@
+name: Pruebas de la base móvil
+
+on:
+  push:
+    paths:
+      - "mobile/**"
+      - ".github/workflows/mobile-ci.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+      - ".github/workflows/mobile-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ionic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Obtener el repositorio
+        uses: actions/checkout@v7
+
+      - name: Configurar Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar lint
+        run: npm run lint
+
+      - name: Ejecutar pruebas
+        run: npm run test -- --run
+
+      - name: Compilar aplicación
+        run: npm run build

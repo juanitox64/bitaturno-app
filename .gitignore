@@ -47,3 +47,9 @@ Thumbs.db
 # Evidencias temporales
 playwright-report/
 test-results/
+
+# Node, Ionic y compilaciones móviles
+.npm-cache/
+mobile/node_modules/
+mobile/dist/
+mobile/coverage/
