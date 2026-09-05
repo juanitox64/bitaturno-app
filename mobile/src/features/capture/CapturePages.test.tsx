@@ -40,6 +40,7 @@ describe('módulo de captura y borradores', () => {
     expect(screen.getByText('Completar novedad')).toBeInTheDocument();
     expect(screen.getByText('Guardar cambios')).toBeInTheDocument();
     expect(screen.getByText('Finalizar registro')).toBeInTheDocument();
+    expect(screen.getByText('Eliminar borrador')).toBeInTheDocument();
   });
 
   it('informa cuando el identificador no existe', () => {
