@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## Sin publicar
+
+- Cambio pendiente por registrar en la versión activa del proyecto.
+- Se documentará el detalle final cuando se cierre la entrega correspondiente.
+
 ## 0.4.0-rc.1 — Base colaborativa de Sumativa 4
 
 - Base híbrida ejecutable con Ionic 9, React 19 y TypeScript.
