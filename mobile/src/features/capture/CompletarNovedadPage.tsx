@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   IonAlert,
   IonButton,
@@ -11,7 +11,7 @@ import {
   IonToast,
 } from '@ionic/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import type { DatosNovedad, PrioridadNovedad } from '../../domain/novedad';
+import type { DatosNovedad, Novedad, PrioridadNovedad } from '../../domain/novedad';
 import { AppPage } from '../../shared/components/AppPage';
 import { rutaHistorico } from '../../shared/constants/routes';
 import {
@@ -20,48 +20,56 @@ import {
 } from '../../shared/validation/novedadValidation';
 import { useNovedades } from '../../state/useNovedades';
 
-const datosVacios: DatosNovedad = {
-  titulo: '',
-  descripcion: '',
-  disciplina: '',
-  tipo: '',
-  turno: '',
-  prioridad: 'media',
-  fechaOcurrencia: '',
-};
-
 export function CompletarNovedadPage() {
   const { id = '' } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const {
-    obtenerPorId,
-    actualizarBorrador,
-    finalizar,
-    eliminarBorrador,
-  } = useNovedades();
+  const { obtenerPorId } = useNovedades();
   const borrador = obtenerPorId(id);
   const editable = borrador?.estado === 'borrador';
-  const [datos, setDatos] = useState<DatosNovedad>(datosVacios);
+
+  if (!borrador) {
+    return (
+      <AppPage titulo="Completar novedad" subtitulo="Paso 2 de 2" volverA="/borradores">
+        <div className="empty-state">No se encontró el borrador solicitado.</div>
+        <IonButton expand="block" routerLink="/borradores">Volver a borradores</IonButton>
+      </AppPage>
+    );
+  }
+
+  if (!editable) {
+    return (
+      <AppPage titulo="Completar novedad" subtitulo="Registro no editable" volverA="/historico">
+        <div className="empty-state">
+          La novedad ya fue finalizada y debe consultarse desde el histórico.
+        </div>
+        <IonButton expand="block" routerLink={rutaHistorico(borrador.id)}>
+          Ver detalle
+        </IonButton>
+      </AppPage>
+    );
+  }
+
+  // La `key` fuerza a React a remontar el formulario cada vez que cambia el
+  // borrador, reiniciando su estado sin necesidad de un useEffect + setState.
+  return <FormularioCompletarNovedad key={borrador.id} borrador={borrador} />;
+}
+
+function FormularioCompletarNovedad({ borrador }: { borrador: Novedad }) {
+  const navigate = useNavigate();
+  const { actualizarBorrador, finalizar, eliminarBorrador } = useNovedades();
+  const id = borrador.id;
+
+  const [datos, setDatos] = useState<DatosNovedad>(() => ({
+    titulo: borrador.titulo,
+    descripcion: borrador.descripcion,
+    disciplina: borrador.disciplina,
+    tipo: borrador.tipo,
+    turno: borrador.turno,
+    prioridad: borrador.prioridad,
+    fechaOcurrencia: borrador.fechaOcurrencia,
+  }));
   const [errores, setErrores] = useState<Record<string, string>>({});
   const [mensaje, setMensaje] = useState('');
   const [confirmarEliminacion, setConfirmarEliminacion] = useState(false);
-
-  useEffect(() => {
-    const actual = obtenerPorId(id);
-    if (!actual) {
-      setDatos(datosVacios);
-      return;
-    }
-    setDatos({
-      titulo: actual.titulo,
-      descripcion: actual.descripcion,
-      disciplina: actual.disciplina,
-      tipo: actual.tipo,
-      turno: actual.turno,
-      prioridad: actual.prioridad,
-      fechaOcurrencia: actual.fechaOcurrencia,
-    });
-  }, [id, obtenerPorId]);
 
   const actualizarCampo = <K extends keyof DatosNovedad>(campo: K, valor: DatosNovedad[K]) => {
     setDatos((actuales) => ({ ...actuales, [campo]: valor }));
@@ -74,7 +82,6 @@ export function CompletarNovedadPage() {
   };
 
   const guardarCambios = () => {
-    if (!editable) return;
     try {
       actualizarBorrador(id, datos);
       setErrores({});
@@ -89,7 +96,6 @@ export function CompletarNovedadPage() {
   };
 
   const finalizarRegistro = () => {
-    if (!editable) return;
     const validacion = validarFinalizacion(datos);
     setErrores(validacion);
     if (Object.keys(validacion).length > 0) {
@@ -117,28 +123,6 @@ export function CompletarNovedadPage() {
       setMensaje(error instanceof Error ? error.message : 'No fue posible eliminar el borrador.');
     }
   };
-
-  if (!borrador) {
-    return (
-      <AppPage titulo="Completar novedad" subtitulo="Paso 2 de 2" volverA="/borradores">
-        <div className="empty-state">No se encontró el borrador solicitado.</div>
-        <IonButton expand="block" routerLink="/borradores">Volver a borradores</IonButton>
-      </AppPage>
-    );
-  }
-
-  if (!editable) {
-    return (
-      <AppPage titulo="Completar novedad" subtitulo="Registro no editable" volverA="/historico">
-        <div className="empty-state">
-          La novedad ya fue finalizada y debe consultarse desde el histórico.
-        </div>
-        <IonButton expand="block" routerLink={rutaHistorico(borrador.id)}>
-          Ver detalle
-        </IonButton>
-      </AppPage>
-    );
-  }
 
   return (
     <AppPage titulo="Completar novedad" subtitulo="Paso 2 de 2" volverA="/borradores">
