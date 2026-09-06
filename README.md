@@ -1,9 +1,10 @@
-# BitaTurno `0.4.0-rc.1` — base colaborativa de Sumativa 4
+# BitaTurno `0.4.0-rc.1` — prototipo integrado de Sumativa 4
 
 BitaTurno es una aplicación académica para capturar, completar, consultar y
 gestionar novedades asociadas a una jornada de trabajo. Esta etapa continúa el
 MVP web Django construido y verificado previamente, conserva el prototipo móvil
-navegable v0.3 y añade una base híbrida Ionic preparada para trabajo colaborativo.
+navegable v0.3 y añade un prototipo Ionic React con captura, borradores, histórico
+y detalle implementados. La aplicación Ionic está publicada en AWS Amplify.
 
 ## Problema que aborda
 
@@ -14,31 +15,35 @@ su clasificación y consultarla después en una bitácora.
 
 ## Objetivo
 
-Mantener un CRUD web pequeño y comprobable, y representar de forma honesta cómo
-podría extenderse hacia una experiencia móvil para captura rápida y trabajo con
-conectividad intermitente.
+Mantener el MVP web y ofrecer un prototipo móvil para capturar novedades,
+recuperar borradores, completar su clasificación y consultar el histórico.
+El prototipo Ionic conserva los datos en el navegador; la integración con Django
+por API y la sincronización entre dispositivos permanecen como trabajo futuro.
 
 ## Accesos públicos
 
+- Aplicación Ionic en AWS Amplify: <https://main.d1kt5hvps8dfnb.amplifyapp.com/>
 - Repositorio: <https://github.com/juanitox64/bitaturno-app>
 - Mockup móvil: <https://juanitox64.github.io/bitaturno-app/>
 
-El sitio de GitHub Pages es un prototipo estático. No ejecuta Django ni se
-conecta a una base de datos.
+AWS Amplify publica la aplicación Ionic desde `mobile/`; sus registros se guardan
+en el mismo navegador mediante `localStorage`. GitHub Pages conserva el mockup
+estático v0.3. Ninguno de esos dos sitios ejecuta Django ni utiliza una base de
+datos remota.
 
 ## Estado de los componentes
 
-| Componente | Estado después de esta tarea |
+| Componente | Estado verificado al 6 de septiembre de 2026 |
 |---|---|
 | MVP Django | Existente y conservado |
 | Mockup estático v0.3 | Existente |
-| Base Ionic v0.4 | Implementada |
+| Prototipo Ionic v0.4 | Implementado e integrado |
 | Login e inicio Ionic | Implementados |
 | Persistencia local común | Implementada |
-| Captura y borradores | Estructura en integración |
-| Histórico y detalle | Estructura en integración |
+| Captura y borradores | Implementados e integrados mediante PR #2 |
+| Histórico y detalle | Implementados e integrados mediante PR #3 |
 | Integración con API remota | No implementada |
-| Despliegue AWS Amplify | Preparado, no ejecutado |
+| Despliegue AWS Amplify | Implementación de `main` realizada |
 | Publicación nativa | Fuera del alcance |
 
 ## Funciones reales del MVP web
@@ -93,7 +98,7 @@ bitaturno-app/
 ├── mobile/                 # Base Ionic React 0.4.0-rc.1
 ├── documentation/          # Arquitectura, alcance, pruebas y evidencias
 ├── .github/workflows/      # CI y despliegue del sitio estático
-├── amplify.yml             # Preparación de build para AWS Amplify
+├── amplify.yml             # Build del frontend Ionic en AWS Amplify
 ├── requirements.txt
 └── requirements-lock.txt
 ```
@@ -165,10 +170,24 @@ npm run build
 npm run dev
 ```
 
-La base implementa sesión demostrativa, Login, Inicio, dominio, persistencia
-local versionada, proveedor de estado y rutas protegidas. Los módulos de captura
-e histórico son esqueletos navegables en integración; su lógica final no forma
-parte de esta rama base.
+La aplicación implementa sesión demostrativa, Inicio con contadores, captura,
+listado y edición de borradores, eliminación confirmada, finalización, histórico
+con buscador y filtros, detalle y manejo de identificadores inexistentes.
+Todos los módulos usan el dominio y la persistencia local comunes.
+
+Al finalizar una captura, su estado operacional pasa a `pendiente`; por eso puede
+aparecer como pendiente dentro del histórico de capturas finalizadas.
+
+Validación de la versión integrada `e4c8cdb7` de `main`:
+
+- Ionic: 24 pruebas en 7 archivos, lint y build aprobados.
+- Django: 57 pruebas y comprobaciones del proyecto aprobadas.
+- Mockup estático: 9 pruebas aprobadas.
+- Total: 90 pruebas automatizadas aprobadas.
+
+Ejecuciones de referencia:
+[Ionic](https://github.com/juanitox64/bitaturno-app/actions/runs/34011536203) y
+[Django / mockup](https://github.com/juanitox64/bitaturno-app/actions/runs/34011536205).
 
 Las instrucciones colaborativas están en
 [`documentation/sumativa4/`](documentation/sumativa4/) y los resultados de la
@@ -200,20 +219,22 @@ La propuesta completa se encuentra en
 
 - El mockup no autentica usuarios ni envía información.
 - Los datos del mockup estático son ficticios y se reinician al recargar; los
-  datos ficticios de la base Ionic sí persisten localmente.
+  datos ficticios de Ionic sí persisten localmente en el mismo navegador.
 - No existe API REST en esta entrega.
-- No existe sincronización ni almacenamiento offline de novedades reales.
+- No existe cola de sincronización ni garantía de operación offline de Ionic.
 - La PWA corresponde únicamente al sitio estático demostrativo.
 - El MVP usa SQLite y admite una fotografía por novedad.
 - La base Ionic no tiene API, sincronización remota ni autenticación real.
-- Captura/borradores e histórico/detalle todavía no son módulos completos.
-- `amplify.yml` prepara el build, pero no demuestra un despliegue en AWS.
+- Los registros de Ionic no se comparten entre navegadores ni se respaldan en AWS.
+- Django no está desplegado en la URL de Amplify.
+- Las fotografías y el cambio operacional de estados pertenecen al MVP Django;
+  no se presentan como funcionalidades implementadas en Ionic.
 
 ## Mejoras futuras
 
-- Completar captura, borradores, histórico y detalle mediante cambios revisados.
 - API autenticada y versionada.
 - Sincronización idempotente y resolución de conflictos.
 - Notificaciones y trazabilidad ampliada.
 - Múltiples fotografías, sujeto a una revisión del alcance.
 - Funciones de IA únicamente en una etapa posterior y fuera de esta entrega.
+

@@ -4,24 +4,25 @@
 
 Esta propuesta extiende de forma gradual el dominio ya implementado por
 BitaTurno. No describe una API existente ni una sincronización operativa: define
-la arquitectura que podría conectar una futura aplicación móvil con el MVP web.
+la arquitectura que podría conectar la aplicación Ionic actual con el MVP web.
 
 ## Base móvil implementada en la Sumativa 4
 
-Existe una base Ionic React que se ejecuta en navegador, conserva novedades
-ficticias en `localStorage` y separa la persistencia de las páginas mediante una
-interfaz. Login, Inicio y la capa común están implementados. Captura e histórico
-son esqueletos preparados para integración posterior.
+La aplicación Ionic React se ejecuta en navegador, conserva novedades ficticias
+en `localStorage` y separa la persistencia de las páginas mediante una interfaz.
+Login, Inicio, captura, borradores, finalización, histórico, filtros y detalle
+están implementados e integrados. El frontend se encuentra publicado en
+[AWS Amplify](https://main.d1kt5hvps8dfnb.amplifyapp.com/).
 
-La evolución funcional se orienta a la captura y consulta rápida durante una
-jornada:
+El despliegue no conecta los datos de Ionic con Django: cada navegador conserva
+sus propios registros. La API y la sincronización descritas a continuación son
+una propuesta de evolución.
 
-- texto y una o más evidencias según el alcance futuro;
-- borradores con almacenamiento local;
-- fecha de ocurrencia;
-- clasificación inmediata o posterior;
-- consulta breve de novedades;
-- estado de sincronización;
+La evolución funcional ampliaría la captura y consulta local con:
+
+- evidencias fotográficas según el alcance futuro;
+- catálogos y registros compartidos mediante API;
+- cola local y estado de sincronización;
 - resumen manual de jornada.
 
 ## Plataforma web implementada
@@ -157,6 +158,8 @@ de captura y la hora confirmada por el servidor como datos distintos.
 ## Límites actuales
 
 GitHub Pages conserva el prototipo estático v0.3. De forma separada, `mobile/`
-contiene la base Ionic `0.4.0-rc.1` con persistencia local de novedades ficticias.
+contiene el prototipo Ionic `0.4.0-rc.1`, publicado en Amplify, con captura,
+borradores, histórico, detalle y persistencia local de novedades ficticias.
 Ninguno de los dos implementa una cola real, autenticación, API, sincronización
 ni transferencia remota de fotografías.
+
