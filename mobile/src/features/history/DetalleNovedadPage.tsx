@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AppPage } from '../../shared/components/AppPage';
 import { useNovedades } from '../../state/useNovedades';
 import './history.css';
@@ -11,6 +11,7 @@ function formatearFecha(valor?: string): string {
 }
 
 export function DetalleNovedadPage() {
+  const navigate = useNavigate();
   const { id = '' } = useParams<{ id: string }>();
   const { obtenerPorId } = useNovedades();
   const encontrada = obtenerPorId(id);
@@ -23,7 +24,7 @@ export function DetalleNovedadPage() {
           <div className="empty-state">
             No se encontró una novedad finalizada para el identificador solicitado.
           </div>
-          <button type="button" className="secondary-action" onClick={() => window.history.back()}>
+          <button type="button" className="secondary-action" onClick={() => navigate('/historico', { replace: true })}>
             Volver al histórico
           </button>
         </>
