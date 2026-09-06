@@ -1,25 +1,7 @@
-import {
-  IonBadge,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonItem,
-  IonLabel,
-  IonList,
-} from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import type { EstadoNovedad } from '../../domain/novedad';
 import { AppPage } from '../../shared/components/AppPage';
 import { useNovedades } from '../../state/useNovedades';
 import './history.css';
-
-function colorEstado(estado: EstadoNovedad): string {
-  if (estado === 'cerrada') return 'success';
-  if (estado === 'en_revision') return 'tertiary';
-  return 'warning';
-}
 
 function formatearFecha(valor?: string): string {
   if (!valor) return 'Sin fecha';
@@ -32,7 +14,7 @@ export function DetalleNovedadPage() {
   const { id = '' } = useParams<{ id: string }>();
   const { obtenerPorId } = useNovedades();
   const encontrada = obtenerPorId(id);
-  const novedad = encontrada?.estado === 'borrador' ? undefined : encontrada;
+  const novedad = encontrada && encontrada.estado !== 'borrador' ? encontrada : undefined;
 
   return (
     <AppPage titulo="Detalle de novedad" subtitulo="Bitácora local" volverA="/historico">
@@ -41,56 +23,34 @@ export function DetalleNovedadPage() {
           <div className="empty-state">
             No se encontró una novedad finalizada para el identificador solicitado.
           </div>
-          <IonButton expand="block" routerLink="/historico">
+          <button type="button" className="secondary-action" onClick={() => window.history.back()}>
             Volver al histórico
-          </IonButton>
+          </button>
         </>
       ) : (
-        <IonCard className="detail-card">
-          <IonCardHeader>
-            <div className="history-card-heading">
-              <IonBadge color={colorEstado(novedad.estado)}>
-                {novedad.estado.replace('_', ' ')}
-              </IonBadge>
-              <span className={`priority-chip priority-${novedad.prioridad}`}>
-                {novedad.prioridad}
-              </span>
-            </div>
-            <IonCardTitle>{novedad.titulo}</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <p className="detail-description">{novedad.descripcion}</p>
-            <IonList className="detail-list">
-              <IonItem>
-                <IonLabel><strong>Disciplina</strong><p>{novedad.disciplina || 'Sin clasificar'}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Tipo</strong><p>{novedad.tipo || 'Sin clasificar'}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Turno</strong><p>{novedad.turno || 'Sin informar'}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Prioridad</strong><p>{novedad.prioridad}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Estado</strong><p>{novedad.estado.replace('_', ' ')}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Fecha de ocurrencia</strong><p>{formatearFecha(novedad.fechaOcurrencia)}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Fecha de creación</strong><p>{formatearFecha(novedad.fechaCreacion)}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Última actualización</strong><p>{formatearFecha(novedad.fechaActualizacion)}</p></IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel><strong>Fecha de finalización</strong><p>{formatearFecha(novedad.fechaFinalizacion)}</p></IonLabel>
-              </IonItem>
-            </IonList>
-          </IonCardContent>
-        </IonCard>
+        <article className="detail-card">
+          <header className="history-card-heading">
+            <span className={`priority-chip priority-${novedad.prioridad}`}>
+              {novedad.prioridad}
+            </span>
+            <span className="detail-state">{novedad.estado.replace('_', ' ')}</span>
+          </header>
+
+          <h2>{novedad.titulo}</h2>
+          <p className="detail-description">{novedad.descripcion}</p>
+
+          <ul className="detail-list">
+            <li><strong>Disciplina</strong><span>{novedad.disciplina || 'Sin clasificar'}</span></li>
+            <li><strong>Tipo</strong><span>{novedad.tipo || 'Sin clasificar'}</span></li>
+            <li><strong>Turno</strong><span>{novedad.turno || 'Sin informar'}</span></li>
+            <li><strong>Prioridad</strong><span>{novedad.prioridad}</span></li>
+            <li><strong>Estado</strong><span>{novedad.estado.replace('_', ' ')}</span></li>
+            <li><strong>Fecha de ocurrencia</strong><span>{formatearFecha(novedad.fechaOcurrencia)}</span></li>
+            <li><strong>Fecha de creación</strong><span>{formatearFecha(novedad.fechaCreacion)}</span></li>
+            <li><strong>Última actualización</strong><span>{formatearFecha(novedad.fechaActualizacion)}</span></li>
+            <li><strong>Fecha de finalización</strong><span>{formatearFecha(novedad.fechaFinalizacion)}</span></li>
+          </ul>
+        </article>
       )}
     </AppPage>
   );

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { NovedadesProvider } from '../../state/NovedadesProvider';
@@ -14,7 +14,10 @@ function conDatos(elemento: React.ReactElement, ruta = '/') {
 }
 
 describe('histórico y detalle', () => {
-  beforeEach(() => window.localStorage.clear());
+  beforeEach(() => {
+    cleanup();
+    window.localStorage.clear();
+  });
 
   it('muestra registros finalizados y excluye el borrador de demostración', () => {
     conDatos(<HistoricoPage />);

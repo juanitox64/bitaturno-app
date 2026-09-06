@@ -70,15 +70,56 @@
   overflow-wrap: anywhere;
 }
 
+.detail-state {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #eaf5ee;
+  color: #1f5d48;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.secondary-action {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #b7c8c3;
+  border-radius: 12px;
+  background: #f6faf8;
+  color: #1d4c42;
+  font-weight: 700;
+}
+
 .detail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   border: 1px solid #d8e2de;
   border-radius: 12px;
   overflow: hidden;
 }
 
-.detail-list ion-label p {
-  margin-top: 0.25rem;
-  white-space: normal;
+.detail-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #e2ece9;
+}
+
+.detail-list li:last-child {
+  border-bottom: none;
+}
+
+.detail-list strong {
+  color: #223932;
+}
+
+.detail-list span {
+  color: #52635f;
   overflow-wrap: anywhere;
 }
 
