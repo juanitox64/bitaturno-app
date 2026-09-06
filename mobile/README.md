@@ -1,30 +1,24 @@
-# BitaTurno móvil — base `0.4.0-rc.1`
+# BitaTurno móvil — prototipo integrado `0.4.0-rc.1`
 
-Base híbrida académica construida con Ionic, React y TypeScript. Se ejecuta en
-navegador y está organizada para que los módulos de captura e histórico puedan
-desarrollarse en ramas separadas sin modificar el contrato común.
+Aplicación académica construida con Ionic, React y TypeScript. Se ejecuta en
+navegador y está publicada en
+[AWS Amplify](https://main.d1kt5hvps8dfnb.amplifyapp.com/).
 
 ## Estado real
 
-Implementado y probado:
+Implementado e integrado en `main`:
 
-- navegación Ionic para siete rutas;
-- protección local básica de rutas;
-- login demostrativo y cierre de sesión;
-- inicio con contadores y accesos;
-- modelo `Novedad` y validaciones comunes;
-- repositorio `localStorage` tras una interfaz;
-- datos semilla ficticios y restablecimiento;
-- proveedor y hook `useNovedades`;
-- pruebas de infraestructura, validaciones, Login e Inicio.
+- navegación para siete rutas y protección mediante sesión demostrativa;
+- login, cierre de sesión e inicio con contadores y accesos;
+- modelo `Novedad`, validaciones comunes y proveedor `useNovedades`;
+- creación, listado, búsqueda, edición y eliminación confirmada de borradores;
+- finalización de la captura y traslado al histórico;
+- histórico con búsqueda y filtros por disciplina, prioridad y estado;
+- detalle y manejo de identificadores inexistentes, con retorno al histórico;
+- persistencia local, datos ficticios iniciales y restablecimiento de demostración.
 
-Preparado, pero todavía en integración:
-
-- captura, borradores y finalización;
-- histórico, filtros, detalle y revisión móvil.
-
-No existen API remota, sincronización, autenticación real, almacenamiento seguro
-de credenciales, APK, IPA ni despliegue AWS en esta base.
+La captura completada recibe estado operacional `pendiente`. Estar finalizada
+no equivale a tener el estado operacional cerrado.
 
 ## Requisitos
 
@@ -41,10 +35,12 @@ npm run dev
 ```
 
 Abrir la dirección local indicada por Vite. El acceso acepta cualquier usuario y
-contraseña ficticios no vacíos. La contraseña se descarta inmediatamente y la
-sesión demostrativa se conserva solo en `sessionStorage`.
+contraseña ficticios no vacíos. La contraseña se descarta y la sesión se
+conserva en `sessionStorage`; no existe autenticación real.
 
 ## Validación
+
+Desde `mobile/`:
 
 ```text
 npm ci
@@ -53,47 +49,52 @@ npm run test -- --run
 npm run build
 ```
 
+El commit integrado `e4c8cdb7` obtuvo 24 pruebas aprobadas en 7 archivos, lint y
+build aprobados. El resultado está en
+[GitHub Actions, ejecución 34011536203](https://github.com/juanitox64/bitaturno-app/actions/runs/34011536203).
 La salida estática se genera en `mobile/dist/`.
 
 ## Rutas
 
-| Ruta | Estado |
+| Ruta | Función implementada |
 |---|---|
-| `/login` | Implementada |
-| `/inicio` | Implementada |
-| `/nueva` | Esqueleto en integración |
-| `/borradores` | Esqueleto en integración |
-| `/borradores/:id` | Esqueleto en integración |
-| `/historico` | Esqueleto en integración |
-| `/historico/:id` | Esqueleto en integración |
+| `/login` | Acceso demostrativo |
+| `/inicio` | Contadores y accesos |
+| `/nueva` | Crear borrador |
+| `/borradores` | Listar y buscar borradores |
+| `/borradores/:id` | Editar, finalizar o eliminar con confirmación |
+| `/historico` | Buscar y filtrar novedades finalizadas |
+| `/historico/:id` | Detalle o aviso de registro inexistente |
 
-## Persistencia
+## Persistencia y límites
 
-La clave es `bitaturno:novedades:v1`. El repositorio es síncrono y está aislado
+La clave es `bitaturno:novedades:v1`. El repositorio síncrono está aislado
 mediante `NovedadRepository`, de modo que una API futura pueda sustituir la
-infraestructura sin acoplar las páginas al almacenamiento del navegador. Los
-datos persisten al recargar. No se guardan contraseñas.
+infraestructura sin acoplar las páginas al almacenamiento. Los datos persisten
+al recargar en el mismo navegador. No se guardan contraseñas.
 
-## AWS Amplify: pasos pendientes
+No existen API remota, sincronización, autenticación real, base de datos
+compartida, captura de fotografías en Ionic, APK ni IPA. AWS aloja el frontend;
+no respalda los registros locales ni ejecuta Django. No se garantiza el
+funcionamiento offline del prototipo Ionic.
 
-El archivo raíz `amplify.yml` describe el monorepo con `mobile/` como aplicación
-y `dist/` como salida. Una persona autorizada deberá:
+## AWS Amplify
 
-1. ingresar a AWS Amplify;
-2. seleccionar **Host web app** y conectar el repositorio autorizado;
-3. escoger la rama revisada que se decida desplegar;
-4. confirmar que el monorepo usa `mobile` como raíz de aplicación;
-5. revisar que la configuración detectada coincida con `amplify.yml`;
-6. ejecutar el despliegue y comprobar directamente todas las rutas;
-7. registrar la URL y las evidencias reales solo después del resultado exitoso.
+La rama `main` está desplegada en
+<https://main.d1kt5hvps8dfnb.amplifyapp.com/>.
 
-No se requieren credenciales dentro del repositorio y esta tarea no realizó el
-despliegue.
+El archivo raíz `amplify.yml` define `mobile` como raíz, `npm ci` para instalar,
+`npm run build` para compilar y `dist` como salida. Las rutas internas utilizan
+la reescritura hacia `/index.html` configurada en Amplify.
+
+El cierre del 6 de septiembre de 2026 registra la implementación posterior a la
+integración del PR #3 y la comprobación manual del equipo. No se necesitan
+credenciales dentro del repositorio.
 
 ## Documentación técnica
 
-La base se documenta en:
+- `documentation/sumativa4/CONTRATO_TECNICO.md`: contrato compartido.
+- `documentation/sumativa4/PLAN_INTEGRACION.md`: planificación de referencia.
+- `documentation/sumativa4/VALIDACION_BASE.md`: resultados históricos de la base;
+  los resultados del cierre están indicados en la sección Validación anterior.
 
-- `documentation/sumativa4/CONTRATO_TECNICO.md`;
-- `documentation/sumativa4/PLAN_INTEGRACION.md`;
-- `documentation/sumativa4/VALIDACION_BASE.md`.
