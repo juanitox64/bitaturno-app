@@ -1,0 +1,144 @@
+.history-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0.25rem 1rem;
+}
+
+.history-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.history-card,
+.detail-card {
+  width: 100%;
+  margin: 0;
+}
+
+.history-card-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.history-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem 1rem;
+  color: #52635f;
+  font-size: 0.82rem;
+}
+
+.history-meta span:last-child {
+  grid-column: 1 / -1;
+}
+
+.priority-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.priority-alta {
+  color: #8a1c1c;
+  background: #fde7e7;
+}
+
+.priority-media {
+  color: #75500a;
+  background: #fff3cf;
+}
+
+.priority-baja {
+  color: #1d5b50;
+  background: #e0f3ee;
+}
+
+.detail-description {
+  margin: 0 0 1rem;
+  color: #344943;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.detail-state {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #eaf5ee;
+  color: #1f5d48;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.secondary-action {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #b7c8c3;
+  border-radius: 12px;
+  background: #f6faf8;
+  color: #1d4c42;
+  font-weight: 700;
+}
+
+.detail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #d8e2de;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.detail-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #e2ece9;
+}
+
+.detail-list li:last-child {
+  border-bottom: none;
+}
+
+.detail-list strong {
+  color: #223932;
+}
+
+.detail-list span {
+  color: #52635f;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .history-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .history-toolbar ion-button {
+    align-self: flex-start;
+    margin: 0;
+  }
+
+  .history-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .history-meta span:last-child {
+    grid-column: auto;
+  }
+}

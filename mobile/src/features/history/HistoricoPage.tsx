@@ -1,72 +1,136 @@
+import { useMemo, useState } from 'react';
 import {
-  IonBadge,
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonInput,
   IonItem,
+  IonLabel,
   IonList,
-  IonSearchbar,
   IonSelect,
   IonSelectOption,
 } from '@ionic/react';
 import { AppPage } from '../../shared/components/AppPage';
-import { ModulePendingNotice } from '../../shared/components/ModulePendingNotice';
 import { useNovedades } from '../../state/useNovedades';
+import {
+  FILTROS_INICIALES,
+  filtrarYOrdenarNovedades,
+  obtenerDisciplinas,
+} from './historyFilters';
+import './history.css';
 
 export function HistoricoPage() {
   const { finalizadas } = useNovedades();
-  // TODO: implementar filtros, orden y navegación al detalle.
+  const [filtros, setFiltros] = useState(FILTROS_INICIALES);
+
+  const disciplinas = useMemo(
+    () => obtenerDisciplinas(finalizadas),
+    [finalizadas],
+  );
+
+  const resultados = useMemo(
+    () => filtrarYOrdenarNovedades(finalizadas, filtros),
+    [finalizadas, filtros],
+  );
+
+  const actualizarFiltro = <K extends keyof typeof FILTROS_INICIALES>(
+    clave: K,
+    valor: (typeof FILTROS_INICIALES)[K],
+  ) => {
+    setFiltros((prev) => ({ ...prev, [clave]: valor }));
+  };
 
   return (
-    <AppPage titulo="Histórico" subtitulo="Bitácora local" volverA="/inicio">
-      <ModulePendingNotice>
-        Los controles y datos tipados están disponibles; falta implementar filtrado y navegación final.
-      </ModulePendingNotice>
-
-      <IonSearchbar aria-label="Buscar novedades" placeholder="Buscar por título" />
-      <IonList inset className="filter-list">
+    <AppPage titulo="Histórico" subtitulo="Novedades finalizadas" volverA="/inicio">
+      <div className="history-toolbar">
         <IonItem>
-          <IonSelect label="Disciplina" labelPlacement="stacked" value="todas">
+          <IonLabel position="floating">Buscar</IonLabel>
+          <IonInput
+            value={filtros.texto}
+            onIonInput={(event) => actualizarFiltro('texto', event.detail.value ?? '')}
+          />
+        </IonItem>
+
+        <IonItem>
+          <IonLabel>Disciplina</IonLabel>
+          <IonSelect
+            value={filtros.disciplina}
+            onIonChange={(event) => actualizarFiltro('disciplina', event.detail.value ?? 'todas')}
+          >
             <IonSelectOption value="todas">Todas</IonSelectOption>
-            <IonSelectOption value="alfa">Disciplina Alfa</IonSelectOption>
+            {disciplinas.map((disciplina) => (
+              <IonSelectOption key={disciplina} value={disciplina}>
+                {disciplina}
+              </IonSelectOption>
+            ))}
           </IonSelect>
         </IonItem>
+
         <IonItem>
-          <IonSelect label="Prioridad" labelPlacement="stacked" value="todas">
+          <IonLabel>Prioridad</IonLabel>
+          <IonSelect
+            value={filtros.prioridad}
+            onIonChange={(event) => actualizarFiltro('prioridad', event.detail.value ?? 'todas')}
+          >
             <IonSelectOption value="todas">Todas</IonSelectOption>
             <IonSelectOption value="alta">Alta</IonSelectOption>
             <IonSelectOption value="media">Media</IonSelectOption>
             <IonSelectOption value="baja">Baja</IonSelectOption>
           </IonSelect>
         </IonItem>
+
         <IonItem>
-          <IonSelect label="Estado" labelPlacement="stacked" value="todos">
+          <IonLabel>Estado</IonLabel>
+          <IonSelect
+            value={filtros.estado}
+            onIonChange={(event) => actualizarFiltro('estado', event.detail.value ?? 'todos')}
+          >
             <IonSelectOption value="todos">Todos</IonSelectOption>
             <IonSelectOption value="pendiente">Pendiente</IonSelectOption>
             <IonSelectOption value="en_revision">En revisión</IonSelectOption>
             <IonSelectOption value="cerrada">Cerrada</IonSelectOption>
           </IonSelect>
         </IonItem>
-      </IonList>
+      </div>
 
-      <section aria-label="Listado de novedades">
-        {finalizadas.length === 0 && (
-          <div className="empty-state">No existen novedades finalizadas.</div>
-        )}
-        {finalizadas.map((novedad) => (
-          <IonCard key={novedad.id}>
-            <IonCardHeader>
-              <IonBadge>{novedad.estado.replace('_', ' ')}</IonBadge>
-              <IonCardTitle>{novedad.titulo}</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <p>{novedad.descripcion}</p>
-              <small>Detalle navegable pendiente de conexión.</small>
-            </IonCardContent>
-          </IonCard>
-        ))}
-      </section>
+      <IonButton expand="block" fill="clear" onClick={() => setFiltros(FILTROS_INICIALES)}>
+        Limpiar filtros
+      </IonButton>
+
+      {resultados.length === 0 ? (
+        <div className="empty-state">No hay novedades con los filtros actuales.</div>
+      ) : (
+        <IonList inset className="history-list">
+          {resultados.map((novedad) => (
+            <IonCard key={novedad.id} className="history-card">
+              <IonCardHeader>
+                <div className="history-card-heading">
+                  <IonCardTitle>{novedad.titulo}</IonCardTitle>
+                  <span className={`priority-chip priority-${novedad.prioridad}`}>
+                    {novedad.prioridad}
+                  </span>
+                </div>
+              </IonCardHeader>
+              <IonCardContent>
+                <p>{novedad.descripcion}</p>
+                <div className="history-meta">
+                  <span><strong>Disciplina:</strong> {novedad.disciplina || 'Sin clasificar'}</span>
+                  <span><strong>Turno:</strong> {novedad.turno}</span>
+                  <span><strong>Estado:</strong> {novedad.estado}</span>
+                  <span><strong>Fecha:</strong> {new Date(novedad.fechaFinalizacion ?? novedad.fechaActualizacion).toLocaleDateString('es-CL')}</span>
+                </div>
+                <IonButton size="small" fill="outline" routerLink={`/historico/${novedad.id}`}>
+                  Ver detalle
+                </IonButton>
+              </IonCardContent>
+            </IonCard>
+          ))}
+        </IonList>
+      )}
     </AppPage>
   );
 }
+
+export default HistoricoPage;
